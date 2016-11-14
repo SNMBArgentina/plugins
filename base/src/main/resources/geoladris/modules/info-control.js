@@ -266,7 +266,7 @@ define([ "map", "message-bus", "customization", "openlayers", "jquery" ], functi
 		}
 	});
 
-	bus.listen("layers-loaded", function() {
+	function reload() {
 		bus.send("set-default-exclusive-control", [ controls ]);
 		bus.send("activate-default-exclusive-control");
 
@@ -278,5 +278,10 @@ define([ "map", "message-bus", "customization", "openlayers", "jquery" ], functi
 			control.layers = new Array();
 			control.layers.push(layer);
 		}
-	});
+	}
+
+	// We need 'reload-info-control' in order to activate the control for layers
+	// added manually after 'layers-loaded'
+	bus.listen("reload-info-control", reload);
+	bus.listen("layers-loaded", reload);
 });

@@ -184,7 +184,13 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "moment", "jque
 			}
 
 			tblLayerGroup.append(trLayer);
-			divLayers.accordion("refresh");
+			// For some reason this instruction throws an exception when adding
+			// a layer after 'layers-loaded' has been sent
+			try {
+				divLayers.accordion("refresh");
+			} catch (e) {
+				console.error(e);
+			}
 		}
 	});
 
