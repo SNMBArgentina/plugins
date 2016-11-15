@@ -74,6 +74,7 @@ define([ "message-bus", "layout", "jquery", "openlayers" ], function(bus, layout
 					transparent : true,
 					format : mapLayer.imageFormat || 'image/png'
 				}, {
+					singleTile : true,
 					noMagic : true,
 					visibility : false
 				// Don't show until a "layer-visibility" event indicates so
