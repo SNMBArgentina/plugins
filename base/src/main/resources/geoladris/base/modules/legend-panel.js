@@ -25,8 +25,9 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 		for (var i = 0; i < legendArray.length; i++) {
 			var legendInfo = legendArray[i];
 			var id = dialogId + legendInfo.id;
-			if (!legendInfo.visibility) {
-				content.removeChild(document.getElementById(id + '_container'));
+			var e = document.getElementById(id + '_container')
+			if (!legendInfo.visibility && e) {
+				content.removeChild(e);
 				continue;
 			}
 

@@ -5,6 +5,36 @@ define([ 'message-bus', 'module', './geojson', 'openlayers' ], function(bus, mod
 
 	OpenLayers.ProxyHost = 'proxy?url=';
 
+	function addGoogleLayer(message) {
+		if (!google.maps) {
+			console.error('Google Maps has not been loaded');
+			return;
+		}
+
+		var layer = new OpenLayers.Layer.Google(message.layerId, {
+			type: google.maps.MapTypeId[message.gmaps['gmaps-type']]
+		});
+		layer.id = message.layerId;
+		getMap().addLayer(layer);
+		bus.send('map:layerAdded', [ message ]);
+		layer.setVisibility(message.visibility);
+		if (message.index !== undefined) {
+			getMap().setLayerIndex(layer, message.index);
+		}
+	}
+
+	var googleLayers = {};
+	if (config.gmaps_key) {
+		require([ 'async!http://maps.google.com/maps/api/js?key=' + config.gmaps_key ], function() {
+			if (googleLayers !== null) {
+				for ( var id in googleLayers) {
+					addGoogleLayer(googleLayers[id]);
+				}
+				googleLayers = null;
+			}
+		});
+	}
+
 	bus.listen('modules-initialized', function(e, message) {
 		var htmlId = null;
 		if (config.hasOwnProperty('htmlId')) {
@@ -27,6 +57,11 @@ define([ 'message-bus', 'module', './geojson', 'openlayers' ], function(bus, mod
 	});
 
 	bus.listen('map:layerVisibility', function(event, message) {
+		if (googleLayers && googleLayers[message.layerId]) {
+			googleLayers[message.layerId].visibility = message.visibility;
+			return;
+		}
+
 		var layer = getMap().getLayer(message.layerId);
 		layer.setVisibility(message.visibility);
 	});
@@ -109,9 +144,13 @@ define([ 'message-bus', 'module', './geojson', 'openlayers' ], function(bus, mod
 		} else if (message.osm) {
 			layer = new OpenLayers.Layer.OSM(message.layerId, message.osm.osmUrls);
 		} else if (message.gmaps) {
-			layer = new OpenLayers.Layer.Google(message.layerId, {
-				type: google.maps.MapTypeId[message.gmaps['gmaps-type']]
-			});
+			if (googleLayers !== null) {
+				// Google Maps API js has not been loaded yet
+				googleLayers[message.layerId] = message;
+			} else {
+				// Google Maps API js already loaded; add layer
+				addGoogleLayer(message);
+			}
 		} else if (message.wfs) {
 			layer = new OpenLayers.Layer.Vector('WFS', {
 				strategies: [ new OpenLayers.Strategy.Fixed() ],
@@ -148,6 +187,11 @@ define([ 'message-bus', 'module', './geojson', 'openlayers' ], function(bus, mod
 	});
 
 	bus.listen('map:setLayerIndex', function(e, message) {
+		if (googleLayers && googleLayers[message.layerId]) {
+			googleLayers[message.layerId].index = message.index;
+			return;
+		}
+
 		var layer = getMap().getLayer(message.layerId);
 		getMap().setLayerIndex(layer, message.index);
 	});

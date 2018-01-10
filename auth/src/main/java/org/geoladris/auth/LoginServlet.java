@@ -45,6 +45,7 @@ public class LoginServlet extends HttpServlet {
 
     for (String role : roles) {
       if (request.isUserInRole(role)) {
+        request.getSession().setAttribute(Geoladris.ATTR_ROLE, role);
         return true;
       }
     }

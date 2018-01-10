@@ -1,4 +1,4 @@
-define([ 'message-bus', 'i18n', './auth-user', 'module', 'ui/ui' ], function(bus, i18n, authUser, module, ui) {
+define([ 'message-bus', 'i18n', './auth-user', 'module', 'ui/ui', 'toolbar' ], function(bus, i18n, authUser, module, ui) {
 	var LOGOUT = 'logout';
 	var LOGIN = 'login';
 	var DIALOG_ID = 'auth-dialog';
@@ -109,13 +109,16 @@ define([ 'message-bus', 'i18n', './auth-user', 'module', 'ui/ui' ], function(bus
 		var send = ui.create('div', {
 			id: DIALOG_ID + '-submit-button',
 			parent: DIALOG_ID + '-form',
-			css: 'auth-submit blue-button',
+			css: 'auth-submit blue_button',
 			html: i18n['auth.submit']
 		});
-		send.setAttribute('type', 'submit');
+
+		send.addEventListener("click", function() {
+			doLogin(userInput.value, passInput.value);
+		});
 	}
 
-	if (authUser) {
+	if (typeof authUser === 'string') {
 		initLogged();
 	} else {
 		initNotLogged();

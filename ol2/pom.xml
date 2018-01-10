@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.fao.unredd</groupId>
 		<artifactId>plugins-root</artifactId>
-		<version>6.0.1</version>
+		<version>6.0.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>ol2</artifactId>
 	<name>ol2</name>
@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>org.fao.unredd</groupId>
 			<artifactId>core</artifactId>
-			<version>6.0-SNAPSHOT</version>
+			<version>${core.version}</version>
 		</dependency>
 	</dependencies>
 </project>

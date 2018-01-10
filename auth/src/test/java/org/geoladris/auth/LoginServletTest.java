@@ -1,6 +1,7 @@
 package org.geoladris.auth;
 
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -21,14 +22,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class LoginServletTest {
+  private static final String ADMIN_ROLE = "admin";
+
   private LoginServlet servlet;
   private HttpServletRequest request;
   private HttpServletResponse response;
+  private HttpSession session;
 
   @Before
   public void setup() throws ServletException {
     Properties properties = new Properties();
-    properties.setProperty(LoginServlet.PROP_AUTHORIZED_ROLES, "admin");
+    properties.setProperty(LoginServlet.PROP_AUTHORIZED_ROLES, ADMIN_ROLE);
     Config config = mock(Config.class);
     when(config.getProperties()).thenReturn(properties);
 
@@ -43,7 +47,7 @@ public class LoginServletTest {
     request = mock(HttpServletRequest.class);
     response = mock(HttpServletResponse.class);
 
-    HttpSession session = mock(HttpSession.class);
+    session = mock(HttpSession.class);
     when(request.getSession()).thenReturn(session);
     when(context.getAttribute(Geoladris.ATTR_CONFIG)).thenReturn(config);
   }
@@ -64,7 +68,7 @@ public class LoginServletTest {
     when(request.isUserInRole(anyString())).thenReturn(true);
     servlet.doPost(request, response);
 
-    verify(request).getSession();
+    verify(request, atLeastOnce()).getSession();
     verify(request).login(user, pass);
   }
 
@@ -89,5 +93,6 @@ public class LoginServletTest {
     servlet.doPost(request, response);
 
     verify(response).sendError(HttpServletResponse.SC_NO_CONTENT);
+    verify(session).setAttribute(Geoladris.ATTR_ROLE, ADMIN_ROLE);
   }
 }

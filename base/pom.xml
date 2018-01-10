@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.fao.unredd</groupId>
 		<artifactId>plugins-root</artifactId>
-		<version>6.0.1</version>
+		<version>6.0.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>base</artifactId>
 	<name>geoladris base plugin</name>
@@ -48,17 +48,17 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>ol2</artifactId>
-			<version>6.0.1</version>
+			<version>6.0.4-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>ol2Controls</artifactId>
-			<version>6.0.1</version>
+			<version>6.0.4-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>geojson</artifactId>
-			<version>6.0.1</version>
+			<version>6.0.4-SNAPSHOT</version>
 		</dependency>
 		<!-- J2EE -->
 		<dependency>
