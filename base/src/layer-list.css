@@ -1,83 +1,93 @@
-/* JQuery UI hack */
-.ui-widget {
-	font-size: 11px !important;
+#active_layers, #layerTimeSliders {
+  border: 1px solid #ddd;
+  background: black;
+  color: #ddd;
 }
 
 #active_layers>table {
-	width: 100%;
-	padding: 0px;
+  width: 100%;
+  padding: 0px;
+}
+
+#active_layers .ui-input-container, #layerTimeSliders>.ui-input-container {
+  display: block;
 }
 
 #all_layers {
-	position: relative;
-	top: 0;
-	left: 0;
-	width: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 #all_layers table {
-	width: 100%;
-	border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .layer_row {
-	font-size: 10px;
-	height: 22px;
+  font-size: 10px;
+  height: 22px;
 }
 
 .layer_legend {
-	font-size: 9px;
-	width: 20px;
-	height: 20px;
+  font-size: 9px;
+  width: 20px;
+  height: 20px;
 }
 
 td.layer_visibility {
-	width: 16px;
+  width: 16px;
 }
 
 .layer_visibility {
-	width: 16px;
-	height: 16px;
-	background: url("images/ui-elements.png") no-repeat scroll 0 0 transparent;
-	cursor: pointer;
+  width: 16px;
+  height: 16px;
+  background: url("images/ui-elements.png") no-repeat scroll 0 0 transparent;
+  cursor: pointer;
 }
 
 .layer_visibility.in.mousedown {
-	width: 16px;
-	height: 16px;
-	background-position: -48px 0px;
+  width: 16px;
+  height: 16px;
+  background-position: -48px 0px;
 }
 
 .layer_visibility.checked {
-	width: 16px;
-	height: 16px;
-	background-position: -32px 0px;
+  width: 16px;
+  height: 16px;
+  background-position: -32px 0px;
 }
 
 .layer_visibility.checked.in.mousedown {
-	width: 16px;
-	height: 16px;
-	background-position: -16px 0px;
+  width: 16px;
+  height: 16px;
+  background-position: -16px 0px;
 }
 
 .layer_name {
-	/* 	color: #FFF; */
-	
+  /* 	color: #FFF; */
 }
 
 .layer_action {
-	width: 16px;
+  width: 16px;
 }
 
 .layer_info_button {
-	background: url("images/ui-elements.png") no-repeat scroll 0 -132px
-		rgba(0, 0, 0, 0);
-	display: block;
-	height: 16px;
-	padding: 0;
-	text-decoration: none;
-	width: 16px;
-	cursor: pointer;
+  background: url("images/ui-elements.png") no-repeat scroll 0 -132px rgba(0, 0, 0, 0);
+  display: inline-block;
+  float: right;
+  height: 16px;
+  padding: 0;
+  text-decoration: none;
+  width: 16px;
+  cursor: pointer;
+}
+
+.ui-input-container>.layer_info_button {
+  width: 20px;
 }
 
 .layer-list-layer-container {
@@ -85,26 +95,88 @@ td.layer_visibility {
 }
 
 .group_info_button {
-	position: relative;
-	float: right;
-	width: 16px;
-	height: 16px;
-	padding: 0;
+  position: relative;
+  float: right;
+  width: 16px;
+  height: 16px;
+  padding: 0;
 }
 
 .inline-legend-button {
-	width: 16px;
-	height: 16px;
-	padding: 0;
-	background: url("images/ui-elements.png") no-repeat scroll 0px -114px
-		transparent;
-	display: block;
-	cursor: default;
-	float: left;
-	margin: 8px 5px;
+  width: 20px;
+  height: 16px;
+  padding: 0;
+  background: url("images/ui-elements.png") no-repeat scroll 0px -114px transparent;
+  display: block;
+  cursor: default;
+  float: left;
+  margin: 8px 5px;
 }
 
 .inline-legend-button.visible {
-	background-position: -24px -114px;
-	cursor: pointer;
+  background-position: -24px -114px;
+  cursor: pointer;
+}
+
+.layer-list-accordion-header>p {
+  width: auto;
+  display: inline-block;
+}
+
+.layer-list-accordion {
+  background: white;
+  padding: 5px 10px 5px 5px;
+}
+
+.layer-list-accordion .ui-label {
+  width: 100%;
+}
+
+.layer-list-accordion>.ui-input-container {
+  height: 34px;
+  margin: 0;
+}
+
+.layer-list-accordion-header {
+  color: white;
+  padding: 10px;
+  margin-bottom: 5px;
+  background: #38c;
+}
+
+.layer-list-accordion.accordion-content {
+  background: black;
+  color: #ddd;
+}
+
+.layer-list-accordion.accordion-content .layer-list-accordion-header {
+  background: transparent;
+  border: 0;
+  padding: 0px;
+}
+
+.layer-list-accordion.accordion-content .layer-list-accordion.accordion-content {
+  border: 0;
+  padding: 2px 0px 2px 2px;
+}
+
+.layer-list-accordion.accordion-content .layer-list-accordion.accordion-content {
+  display: block !important;
+}
+
+.layer-list-accordion.accordion-content .layer-list-accordion-header, .layer-list-accordion.accordion-content .layer-list-accordion-header>p {
+  pointer-events: none !important;
+}
+
+.layer-list-accordion.accordion-content .layer-list-accordion-header>* {
+  pointer-events: auto !important;
+}
+
+.layer-info-button, .editable-layer-list-button {
+  display: inline-block !important;
+  float: right !important;
+}
+
+.accordion-content .ui-input-container .editable-layer-list-button {
+  width: 20px;
 }

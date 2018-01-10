@@ -53,6 +53,7 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui' 
 
 		button = ui.create('button', {
 			id: 'newGroupButton',
+			css: 'blue_button',
 			parent: 'layers_container',
 			html: 'Nuevo grupo...',
 			clickEventCallback: function() {

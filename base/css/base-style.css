@@ -1,4 +1,4 @@
-#loading-shade {
+#wait-mask {
 	background: rgba(0, 0, 0, 0.7);
 	display: flex;
 	align-items: center;
@@ -7,6 +7,7 @@
 
 #loading-msg {
 	min-width: 12em;
+	max-width: 50%;
 	padding: 20px 50px;
 	background: rgb(150, 150, 150);
 	border: 2px solid rgb(200, 200, 200);
@@ -30,6 +31,7 @@
 
 .dialog-close {
 	background: url("images/close.png");
+	background-size: contain;
 	position: absolute;
 	top: 0px;
 	right: 0px;
@@ -49,6 +51,26 @@
 	font-weight: bold;
 	color: #ccc;
 	background-color: #38c;
+  height: 15px;
+}
+
+.dialog table {
+  font-size: 10px;
+  border-collapse: collapse;
+}
+
+.dialog td {
+  text-align: left;
+}
+
+.dialog td.data, .dialog th.data {
+  border: 1px solid black;
+  padding: 5px;
+  min-width: 10em;
+}
+
+.layer_title_info_center {
+  margin: 10px;
 }
 
 .ui-input-container, .ui-text-area-field-container {
@@ -60,23 +82,19 @@
 	min-width: 8em;
 }
 
-.layer-list-accordion-header {
-	color: white;
-	padding: 10px;
-	margin: 5px 0;
-	background: #38c;
+.noUi-horizontal .noUi-handle {
+  height: 15px;
+  width: 15px;
+  top: -4px;
+  left: -7px;
+  cursor: pointer;
 }
 
-.layer-list-accordion {
-	background: white;
-	padding: 5px;
+.noUi-horizontal {
+  margin: 10px 0px 20px;
+  height: 10px;
 }
 
-.layer-list-accordion .ui-label {
-	width: 100%;
-}
-
-.layer-list-accordion>.ui-input-container {
-	height: 34px;
-	margin: 0;
+.noUi-handle:after, .noUi-handle:before {
+  content: none;
 }

@@ -4,8 +4,8 @@
 	top: 215px;
 	z-index: 1100;
 	width: 25em;
-	height: calc(100% - 215px - 2em);
-	overflow-y: auto;
+	height: calc(100% - 215px);
+	overflow-y: hidden;
 	pointer-events: none;
 }
 

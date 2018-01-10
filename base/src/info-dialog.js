@@ -38,13 +38,16 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 		});
 	});
 
-	bus.listen('clear-info-features', function(event, features, x, y) {
-		if (divResults) {
-			divResults.innerHTML = '';
+	bus.listen('clear-info-features', function() {
+		if (dialog) {
+			let elems = dialog.getElementsByClassName('info_dialog_results');
+			for (let i = 0; i < elems.length; i++) {
+				dialog.removeChild(elems[i]);
+			}
 		}
 
 		infoFeatures = {};
-		if (pointHighlightLayerName != null) {
+		if (pointHighlightLayerName !== null) {
 			bus.send('map:removeLayer', {
 				'layerId': 'info-point-highlight-layer'
 			});
@@ -53,7 +56,7 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 	});
 
 	bus.listen('info-features', function(event, wmsLayerId, features, x, y, mapPoint) {
-		if (pointHighlightLayerName == null) {
+		if (pointHighlightLayerName === null) {
 			pointHighlightLayerName = 'info-point-highlight-layer';
 			bus.send('map:addLayer', {
 				'layerId': pointHighlightLayerName,
@@ -70,11 +73,11 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 					}
 				}
 			});
-			feature = geojson.createFeature(geojson.createPoint(
+			var f = geojson.createFeature(geojson.createPoint(
 					mapPoint.x, mapPoint.y), {});
 			bus.send('map:addFeature', {
 				'layerId': pointHighlightLayerName,
-				'feature': feature
+				'feature': f
 			});
 		}
 
@@ -87,8 +90,8 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 			closeButton: true
 		});
 
-		bus.listen('ui-hide', function(event, id) {
-			if (id == 'info_popup') {
+		bus.listen('ui-hide', function(e, id) {
+			if (id === 'info_popup') {
 				bus.send('clear-info-features');
 				bus.send('clear-highlighted-features');
 			}
@@ -98,12 +101,14 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 		// standard one
 		divResults = ui.create('div', {
 			id: 'result_area_' + wmsLayerId,
-			parent: dialog
+			parent: dialog,
+			css: 'info_dialog_results'
 		});
 
 		ui.create('div', {
 			parent: divResults,
-			css: 'layer_title_info_center'
+			css: 'layer_title_info_center',
+			html: wmsLayerInfo[wmsLayerId].portalLayerName
 		});
 
 		var tableContainer = ui.create('div', {
@@ -115,25 +120,25 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 			parent: tableContainer
 		});
 
-		var tr = ui.create('tr', {
+		var row = ui.create('tr', {
 			parent: table,
 			html: "<th class='command'><th class='command'>"
 		});
 
 		var aliases = wmsLayerInfo[wmsLayerId].aliases;
-		if (aliases == null && features.length > 0) {
+		if (aliases === null && features.length > 0) {
 			var properties = features[0].properties;
 			aliases = [];
-			for (propertyName in properties) {
+			for (var propertyName in properties) {
 				aliases.push({
 					'name': propertyName,
 					'alias': propertyName
 				});
 			}
 		}
-		for (var i = 0; i < aliases.length; i++) {
+		for (let i = 0; i < aliases.length; i++) {
 			ui.create('th', {
-				parent: tr,
+				parent: row,
 				css: 'data',
 				html: aliases[i].alias
 			});
@@ -150,12 +155,12 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 				css: 'command'
 			});
 
-			if (feature.bbox != null) {
+			if (feature.bbox !== null) {
 				ui.create('button', {
 					id: 'info-magnifier-' + wmsLayerId + '-' + index,
 					css: 'info-magnifier',
 					parent: tdMagnifier,
-					image: 'modules/images/zoom-to-object.png',
+					image: 'images/zoom-to-object.png',
 					clickEventName: 'zoom-to',
 					// the parameter is itself an array
 					clickEventMessage: [ feature.bbox ]
@@ -171,12 +176,14 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 			var imgWait = ui.create('img', {
 				parent: tdIndicator
 			});
-			imgWait.src = 'styles/images/ajax-loader.gif';
+			imgWait.src = 'images/loader.gif';
 			imgWait.alt = 'wait';
+			imgWait.style.height = '20px';
+			imgWait.style.width = '20px';
 			var wmsName = wmsLayerInfo[wmsLayerId].wmsName;
 			bus.send('ajax', {
 				url: 'indicators?layerId=' + wmsName,
-				success: function(indicators, textStatus, jqXHR) {
+				success: function(indicators) {
 					if (indicators.length > 0) {
 						bus.send('feature-indicators-received',
 							[ wmsName, wmsLayerId, index,
@@ -197,7 +204,7 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 				});
 			}
 
-			if (feature.highlightGeom != null) {
+			if (feature.highlightGeom !== null) {
 				$(tr).mouseenter(function() {
 					bus.send('highlight-feature', feature.highlightGeom);
 				});
@@ -230,7 +237,7 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 			var button = ui.create('button', {
 				id: 'info-indicator-' + wmsLayerId + '-' + infoFeatureIndex + '-' + indicatorIndex,
 				parent: 'info-indicator-' + wmsLayerId + '-' + infoFeatureIndex,
-				image: 'modules/images/object-indicators.png',
+				image: 'images/object-indicators.png',
 				clickEventName: 'show-feature-indicator',
 				clickEventMessage: [ wmsName, wmsLayerId, infoFeatureIndex, indicatorIndex ]
 			});
@@ -251,7 +258,7 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 					'&objectName=' + feature.properties[indicator.nameField] + //
 					'&layerId=' + wmsName + //
 					'&indicatorId=' + indicator.id,
-			success: function(chartData, textStatus, jqXHR) {
+			success: function(chartData) {
 				var chart = $('<div/>');
 				chart.highcharts(chartData);
 				bus.send('show-info', [ indicator.title, chart[0] ]);

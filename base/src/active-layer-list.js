@@ -45,14 +45,12 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'ui/ui', 'layer
 	});
 
 	bus.listen('layer-visibility', function(event, layerId, visibility) {
-		var tr1, tdLegend, inlineLegend, colspan;
-
 		var layerInfo = layersInfo[layerId];
 		if (!layerInfo) {
 			return;
 		}
 
-		function addLayer(layerId) {
+		function addLayer() {
 			var layerContainer = ui.create('div', {
 				id: layerId + '_active_container',
 				parent: container,
@@ -69,14 +67,14 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'ui/ui', 'layer
 
 			var slider = ui.create('slider', {
 				id: layerId + '_transparency_slider',
-				parent: container,
+				parent: layerContainer,
 				label: layerInfo.label,
 				values: [ 0, 100 ],
 				value: 100 * layerInfo.opacity || 100,
 				snap: false
 			});
-			slider.addEventListener('slide', function(event) {
-				bus.send('transparency-slider-changed', [ layerId, event.detail.value / 100 ]);
+			slider.addEventListener('slide', function(e) {
+				bus.send('transparency-slider-changed', [ layerId, e.detail.value / 100 ]);
 			});
 		}
 

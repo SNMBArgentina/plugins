@@ -1,6 +1,6 @@
 {
 	"name": "@geoladris/layers-editor",
-	"version": "7.0.0-alpha.4",
+	"version": "7.0.0-alpha.6",
 	"license": "MIT",
 	"description": "Geoladris Plugin: layers-editor",
 	"repository": "git@github.com:geoladris/plugins.git",

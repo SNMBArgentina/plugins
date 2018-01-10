@@ -199,7 +199,7 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 						layer = iterator.iterateNext();
 					}
 
-					bus.send('ui-choice:' + fieldset.id + '-wmsName:set-values', [ values ]);
+					bus.send('ui-choice-field:' + fieldset.id + '-wmsName:set-values', [ values ]);
 				}).error(function(e) {
 					bus.send('ui-show', 'layers-editor-wms-error');
 					console.log(e);

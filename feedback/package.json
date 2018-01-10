@@ -1,6 +1,6 @@
 {
 	"name": "@geoladris/feedback",
-	"version": "7.0.0-alpha.2",
+	"version": "7.0.0-alpha.4",
 	"license": "MIT",
 	"description": "Geoladris Plugin: feedback",
 	"repository": "git@github.com:geoladris/plugins.git",
@@ -21,7 +21,7 @@
 	"files": [
 		"/src/**js",
 		"/src/**css",
-		"src/images"
+		"/src/images"
 	],
 	"scripts": {
 		"lint": "eslint src test"

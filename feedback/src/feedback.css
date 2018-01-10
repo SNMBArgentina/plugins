@@ -19,6 +19,11 @@
 	padding: 0px;
 }
 
-#feedback-controls {
-	overflow: auto
+div#feedback-controls {
+	overflow: auto;
+  display: table-cell;
+}
+
+#feedback-draw-control, #feedback-modify-control {
+  margin: 0px 15px 0px 0px;
 }

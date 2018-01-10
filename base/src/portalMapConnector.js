@@ -33,7 +33,7 @@ define([ 'message-bus', 'iso8601', 'geojson/geojson' ], function(bus, iso8601, g
 			});
 		}
 
-		currentControlIds = controlIds;
+		currentControlIds = controlIds.slice(0);
 	};
 
 	bus.listen('activate-default-exclusive-control', function(event) {
@@ -150,7 +150,6 @@ define([ 'message-bus', 'iso8601', 'geojson/geojson' ], function(bus, iso8601, g
 			// We do not activate the control since we'll do it in response to a
 			// layer-visibility event
 
-			defaultExclusiveControl.push(queryInfo.controlId);
 			// We just need the information between add-layer and map:layerAdded
 			// events
 			delete tempMapLayerQueryInfo[message.layerId];

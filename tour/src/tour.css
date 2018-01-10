@@ -1,10 +1,62 @@
 .tour-button {
-	display: inline-block;
-	margin: 10px;
-	padding: 8px;
-	text-decoration: none;
-	font-weight: bold;
-	font-size: 12px;
-	color: white;
-	background: gray;
+  display: inline-block;
+  margin: 10px;
+  padding: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 12px;
+  color: white;
+  background: gray;
+  height: 15px;
+}
+
+div.tooltip {
+  padding: 15px 30px;
+  border-radius: 5px;
+  background: white;
+  text-align: center;
+  max-width: 200px;
+  z-index: 9999;
+  display: block !important;
+  font-size: 12px !important;
+  font-weight: normal !important;
+  color: black !important;
+  left: 10px !important;
+  border: 1px solid black;
+  pointer-events: auto;
+}
+
+.tooltip:before {
+  content: "\A";
+  border-style: solid;
+  border-width: 15px 15px 15px 15px;
+  position: absolute;
+}
+
+.tooltip[x-placement='top']:before {
+  border-color: white transparent transparent transparent;
+  left: calc(50% - 20px);
+  bottom: -20px;
+}
+
+.tooltip[x-placement='bottom']:before {
+  border-color: transparent transparent white transparent;
+  left: calc(50% - 20px);
+  top: -20px;
+}
+
+.tooltip[x-placement='right']:before {
+  border-color: transparent white transparent transparent;
+  top: calc(50% - 20px);
+  left: -25px;
+}
+
+.tooltip[x-placement='left']:before {
+  border-color: transparent transparent transparent white;
+  top: calc(50% - 20px);
+  right: -25px;
+}
+
+.tour-button {
+  height: 15px;
 }

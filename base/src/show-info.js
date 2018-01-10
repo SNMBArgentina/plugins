@@ -6,7 +6,6 @@ define([ 'message-bus', 'ui/ui' ], function(bus, ui) {
 			id: DIALOG_ID,
 			parent: document.body,
 			title: title,
-			modal: true,
 			visible: true,
 			closeButton: true
 		});
