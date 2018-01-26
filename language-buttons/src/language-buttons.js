@@ -8,7 +8,7 @@ define([ 'message-bus', 'toolbar', 'customization', 'ui/ui' ], function(bus, too
 			css: 'blue_button toolbar_button lang_button',
 			clickEventName: 'ui-open-url',
 			clickEventMessage: {
-				url: '?lang=' + langs[i].code,
+				url: 'setlang?' + langs[i].code,
 				target: '_self'
 			}
 		});

@@ -24,7 +24,7 @@ public class CreateCommentServlet extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     Config config = (Config) getServletContext().getAttribute(Geoladris.ATTR_CONFIG);
-    Locale locale = (Locale) req.getAttribute(Geoladris.ATTR_LOCALE);
+    Locale locale = (Locale) req.getSession().getAttribute(Geoladris.ATTR_LOCALE);
     ResourceBundle messages = config.getMessages(locale);
 
     String geom = req.getParameter("geometry");

@@ -1,6 +1,6 @@
 {
 	"name": "@geoladris/base",
-	"version": "7.0.0-alpha.9",
+	"version": "7.0.0-alpha.10",
 	"license": "MIT",
 	"description": "Geoladris Plugin: base",
 	"repository": "git@github.com:geoladris/plugins.git",

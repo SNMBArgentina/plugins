@@ -4,16 +4,23 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.geoladris</groupId>
-		<artifactId>plugins-root</artifactId>
+		<groupId>com.github.geoladris</groupId>
+		<artifactId>plugins</artifactId>
 		<version>7.0.0-SNAPSHOT</version>
 	</parent>
+
+	<groupId>com.github.geoladris.plugins</groupId>
 	<artifactId>geojson</artifactId>
-	<name>geojson</name>
-	<url>http://maven.apache.org</url>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+	<name>Geojson</name>
+	<description>Geojson plugin for Geoladris</description>
+	<url>https://github.com/geoladris/plugins</url>
+
+	<scm>
+		<connection>scm:git:git://github.com/geoladris/plugins.git</connection>
+		<developerConnection>scm:git:ssh://github.com:geoladris/plugins.git</developerConnection>
+		<url>http://github.com/geoladris/plugins/tree/master/geojson</url>
+	</scm>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -22,7 +29,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.geoladris</groupId>
+			<groupId>com.github.geoladris</groupId>
 			<artifactId>core</artifactId>
 			<version>${core.version}</version>
 		</dependency>

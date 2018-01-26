@@ -1,13 +1,25 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.geoladris</groupId>
-		<artifactId>plugins-root</artifactId>
+		<groupId>com.github.geoladris</groupId>
+		<artifactId>plugins</artifactId>
 		<version>7.0.0-SNAPSHOT</version>
 	</parent>
+
+	<groupId>com.github.geoladris.plugins</groupId>
 	<artifactId>base</artifactId>
-	<name>geoladris base plugin</name>
+	<name>Base</name>
+	<description>Base plugin for Geoladris</description>
+	<url>https://github.com/geoladris/plugins</url>
+
+	<scm>
+		<connection>scm:git:git://github.com/geoladris/plugins.git</connection>
+		<developerConnection>scm:git:ssh://github.com:geoladris/plugins.git</developerConnection>
+		<url>http://github.com/geoladris/plugins/tree/master/base</url>
+	</scm>
 
 	<dependencies>
 		<dependency>
@@ -39,7 +51,7 @@
 			<version>2.4</version>
 		</dependency>
 		<dependency>
-			<groupId>${project.groupId}</groupId>
+			<groupId>com.github.geoladris</groupId>
 			<artifactId>core</artifactId>
 			<version>${core.version}</version>
 		</dependency>

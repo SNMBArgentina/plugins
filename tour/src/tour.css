@@ -21,7 +21,6 @@ div.tooltip {
   font-size: 12px !important;
   font-weight: normal !important;
   color: black !important;
-  left: 10px !important;
   border: 1px solid black;
   pointer-events: auto;
 }
@@ -29,32 +28,48 @@ div.tooltip {
 .tooltip:before {
   content: "\A";
   border-style: solid;
-  border-width: 15px 15px 15px 15px;
+  border-width: 10px 10px 10px 10px;
   position: absolute;
 }
 
 .tooltip[x-placement='top']:before {
-  border-color: white transparent transparent transparent;
-  left: calc(50% - 20px);
+  border-color: gray transparent transparent transparent;
+  left: calc(50% - 10px);
   bottom: -20px;
 }
 
 .tooltip[x-placement='bottom']:before {
-  border-color: transparent transparent white transparent;
-  left: calc(50% - 20px);
+  border-color: transparent transparent gray transparent;
+  left: calc(50% - 10px);
   top: -20px;
 }
 
 .tooltip[x-placement='right']:before {
-  border-color: transparent white transparent transparent;
-  top: calc(50% - 20px);
-  left: -25px;
+  border-color: transparent gray transparent transparent;
+  top: calc(50% - 10px);
+  left: -20px;
 }
 
 .tooltip[x-placement='left']:before {
-  border-color: transparent transparent transparent white;
-  top: calc(50% - 20px);
-  right: -25px;
+  border-color: transparent transparent transparent gray;
+  top: calc(50% - 10px);
+  right: -20px;
+}
+
+.tooltip[x-placement='top'] {
+  top: -10px !important
+}
+
+.tooltip[x-placement='left'] {
+  left: -10px !important
+}
+
+.tooltip[x-placement='right'] {
+  left: 10px !important
+}
+
+.tooltip[x-placement='bottom'] {
+  top: 10px !important
 }
 
 .tour-button {

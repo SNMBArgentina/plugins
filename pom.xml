@@ -1,12 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.geoladris</groupId>
-	<artifactId>plugins-root</artifactId>
+	<groupId>com.github.geoladris</groupId>
+	<artifactId>plugins</artifactId>
 	<version>7.0.0-SNAPSHOT</version>
+	<name>Geoladris Plugins</name>
+	<description>The plugins for Geoladris, a framework for building modular web applications.</description>
+	<url>https://github.com/geoladris/plugins</url>
 	<packaging>pom</packaging>
 
-	<name>geoladris plugins</name>
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Oscar Fonts</name>
+			<email>oscar.fonts@geomati.co</email>
+		</developer>
+		<developer>
+			<name>Micho Garcia</name>
+			<email>micho.garcia@geomati.co</email>
+		</developer>
+		<developer>
+			<name>Fernando Gonzalez</name>
+			<email>fernando.gonzalez@geomati.co</email>
+		</developer>
+		<developer>
+			<name>Victor Gonzalez</name>
+			<email>victor.gonzalez@geomati.co</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/geoladris/plugins.git</connection>
+		<developerConnection>scm:git:ssh://github.com:geoladris/plugins.git</developerConnection>
+		<url>http://github.com/geoladris/plugins/tree/master</url>
+	</scm>
 
 	<modules>
 		<module>base</module>
@@ -35,25 +69,17 @@
 	</properties>
 
 	<distributionManagement>
-		<repository>
-			<id>geoladris-releases</id>
-			<url>http://nullisland.geomati.co:8082/repository/releases</url>
-		</repository>
 		<snapshotRepository>
-			<id>geoladris-snapshots</id>
-			<url>http://nullisland.geomati.co:8082/repository/snapshots</url>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
 	</distributionManagement>
 
 	<repositories>
-		<repository>
-			<id>geoladris releases</id>
-			<url>http://nullisland.geomati.co:8082/repository/releases/</url>
-		</repository>
-		<repository>
-			<id>geoladris snapshots</id>
-			<url>http://nullisland.geomati.co:8082/repository/snapshots/</url>
-		</repository>
 		<repository>
 			<id>csgis releases</id>
 			<url>http://service.csgis.de/mvn/repository/releases/</url>
@@ -182,6 +208,17 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
@@ -206,6 +243,27 @@
 			<properties>
 				<skip.karma>true</skip.karma>
 			</properties>
+		</profile>
+		<profile>
+			<id>sign</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 </project>

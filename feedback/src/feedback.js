@@ -20,7 +20,7 @@ function(bus, customization, toolbar, i18n, $, ui, geojson) {
 
 	ui.create('dialog', {
 		id: dialogId,
-		parent: 'map',
+		parent: document.body,
 		title: i18n.feedback_title,
 		closeButton: true
 	});

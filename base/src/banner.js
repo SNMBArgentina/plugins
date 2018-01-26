@@ -27,10 +27,5 @@ define([ 'jquery', 'layout', 'i18n', 'message-bus', 'module', 'ui/ui' ], functio
 			parent: 'banner',
 			html: i18n.title
 		});
-		ui.create('div', {
-			id: 'banner-izq',
-			parent: 'banner',
-			html: i18n.title
-		});
 	}
 });

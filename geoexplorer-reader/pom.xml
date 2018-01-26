@@ -4,13 +4,22 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.geoladris</groupId>
-		<artifactId>plugins-root</artifactId>
+		<groupId>com.github.geoladris</groupId>
+		<artifactId>plugins</artifactId>
 		<version>7.0.0-SNAPSHOT</version>
 	</parent>
 
+	<groupId>com.github.geoladris.plugins</groupId>
 	<artifactId>geoexplorer-reader</artifactId>
-	<name>geoexplorer-reader</name>
+	<name>Geoexplorer Reader</name>
+	<description>Geoexplorer Reader plugin for Geoladris</description>
+	<url>https://github.com/geoladris/plugins</url>
+
+	<scm>
+		<connection>scm:git:git://github.com/geoladris/plugins.git</connection>
+		<developerConnection>scm:git:ssh://github.com:geoladris/plugins.git</developerConnection>
+		<url>http://github.com/geoladris/plugins/tree/master/geoexplorer-reader</url>
+	</scm>
 
 	<dependencies>
 		<dependency>

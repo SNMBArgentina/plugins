@@ -1,16 +1,16 @@
 #legend_panel {
 	min-width: 400px;
-	min-height: 400px;
 	position: absolute;
 	right: 10px;
 	bottom: 50px;
-  color: black;
+	color: black;
 }
 
 #legend_panel_content {
 	background-color: #fff;
 	width: 100%;
-	height: 100%;
+	height: 400px;
+	overflow: auto;
 }
 
 .layer_legend_container {

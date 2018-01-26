@@ -11,7 +11,7 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 
 	ui.create('dialog', {
 		id: dialogId,
-		parent: layout.map.attr('id'),
+		parent: document.body,
 		title: i18n.legend_button,
 		closeButton: true
 	});
