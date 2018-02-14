@@ -80,14 +80,12 @@
 	</distributionManagement>
 
 	<repositories>
-		<repository>
-			<id>csgis releases</id>
-			<url>http://service.csgis.de/mvn/repository/releases/</url>
-		</repository>
-		<repository>
-			<id>csgis snapshots</id>
-			<url>http://service.csgis.de/mvn/repository/snapshots/</url>
-		</repository>
+                <repository>
+                        <id>snapshots-repo</id>
+                        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                        <releases><enabled>false</enabled></releases>
+                        <snapshots><enabled>true</enabled></snapshots>
+                </repository>
 	</repositories>
 	<build>
 		<resources>
