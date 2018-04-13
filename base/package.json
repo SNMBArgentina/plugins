@@ -1,6 +1,6 @@
 {
 	"name": "@geoladris/base",
-	"version": "7.0.0-alpha.10",
+	"version": "7.0.1-SNAPSHOT",
 	"license": "MIT",
 	"description": "Geoladris Plugin: base",
 	"repository": "git@github.com:geoladris/plugins.git",
@@ -10,7 +10,7 @@
 		"Micho García <micho.garcia.geomati.co> (http://michogarcia.org/)"
 	],
 	"dependencies": {
-		"@geoladris/core": "dev",
+		"@geoladris/core": "~7.0.0",
 		"highcharts": "^4.1.5",
 		"moment": "^2.9.0",
 		"requirejs-text": "^2.0.15"

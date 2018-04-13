@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@geoladris/core@dev":
-  version "7.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@geoladris/core/-/core-7.0.0-alpha.3.tgz#410b948f3dba1ed52e9b450849cc228be9d4890c"
+"@geoladris/core@~7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@geoladris/core/-/core-7.0.0.tgz#5462a3949cb8d6fc75e1274e960ee1bd43f3985f"
   dependencies:
     clean-css "^4.1.2"
     fs-extra "^2.1.2"
