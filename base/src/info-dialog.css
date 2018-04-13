@@ -27,3 +27,14 @@
 #info_popup .layer_results table .command {
 	border: 0px;
 }
+
+.info_dialog_results table .command .button-enabled {
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin-right: 5px;
+}
+
+.info_dialog_results table {
+    color: black;
+}

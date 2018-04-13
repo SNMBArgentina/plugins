@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.geoladris</groupId>
 	<artifactId>plugins</artifactId>
-	<version>7.0.0-SNAPSHOT</version>
+	<version>7.0.1-SNAPSHOT</version>
 	<name>Geoladris Plugins</name>
 	<description>The plugins for Geoladris, a framework for building modular web applications.</description>
 	<url>https://github.com/geoladris/plugins</url>
@@ -60,8 +60,7 @@
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<core.version>7.0.0-SNAPSHOT</core.version>
-		<csgis.geoladris.version>1.0-SNAPSHOT</csgis.geoladris.version>
+		<core.version>7.0.0</core.version>
 		<!-- See https://nodejs.org/en/download/ for latest node version -->
 		<node.version>v6.10.1</node.version>
 		<!-- See https://yarnpkg.com/ for latest yarn version -->
@@ -80,14 +79,12 @@
 	</distributionManagement>
 
 	<repositories>
-		<repository>
-			<id>csgis releases</id>
-			<url>http://service.csgis.de/mvn/repository/releases/</url>
-		</repository>
-		<repository>
-			<id>csgis snapshots</id>
-			<url>http://service.csgis.de/mvn/repository/snapshots/</url>
-		</repository>
+                <repository>
+                        <id>snapshots-repo</id>
+                        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                        <releases><enabled>false</enabled></releases>
+                        <snapshots><enabled>true</enabled></snapshots>
+                </repository>
 	</repositories>
 	<build>
 		<resources>

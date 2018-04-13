@@ -1,6 +1,6 @@
 {
 	"name": "@geoladris/tour",
-	"version": "7.0.0-alpha.5",
+	"version": "7.0.1-SNAPSHOT",
 	"license": "MIT",
 	"description": "Geoladris Plugin: tour",
 	"repository": "git@github.com:geoladris/plugins.git",
@@ -10,7 +10,7 @@
 		"Micho García <micho.garcia.geomati.co> (http://michogarcia.org/)"
 	],
 	"dependencies": {
-		"@geoladris/core": "dev"
+		"@geoladris/core": "~7.0.0"
 	},
 	"devDependencies": {
 		"babel-eslint": "^7.2.1",
