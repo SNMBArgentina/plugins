@@ -1,0 +1,15 @@
+#welcome_panel {
+	min-width: 400px;
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+	color: black;
+}
+
+#welcome_panel_content {
+	background-color: #fff;
+	width: 500px;
+	height: 400px;
+	overflow: auto;
+}
+
