@@ -1,4 +1,5 @@
 define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/ui' ], function($, bus, layerListSelector, i18n, moment, ui) {
+	//variables global
 	var layerActions = [];
 	var groupActions = [];
 	var temporalLayers = [];
@@ -15,6 +16,8 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 
 	layerListSelector.registerLayerPanel('all_layers_selector', 10, i18n.layers, all_layers);
 
+	/////Event//////
+	
 	bus.listen('reset-layers', function() {
 		layerActions = [];
 		groupActions = [];
@@ -123,12 +126,16 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 		}
 	});
 
+	
+	/////Function////
+	
 	var updateLabel = function(layerId, layerFormat, date) {
 		var dateStr = moment(date).format(layerFormat || 'YYYY');
 		var label = layerLabels[layerId] + ' (' + dateStr + ')';
 		bus.send('ui-input:' + layerId + ':set-label', label);
 	};
 
+	
 	function findClosestPrevious(layer, date) {
 		var layerTimestamps = layer.timestamps;
 		var layerTimestampStyles = null;
@@ -172,6 +179,9 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 		return closestPrevious;
 	}
 
+	
+	/////Event//////
+		
 	bus.listen('time-slider.selection', function(event, date) {
 		for (var i = 0; i < temporalLayers.length; i++) {
 			var layer = temporalLayers[i];
