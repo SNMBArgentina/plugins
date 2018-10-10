@@ -46,6 +46,10 @@ define([ 'jquery', 'message-bus', 'customization', 'module' ], function($, bus, 
 		} else {
 			url = url + '$';
 		}
+		
+		//I verify if the url is ows replacement by wms
+		url = url.replace('/ows', '/wms');
+		
 		url += 'REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&TRANSPARENT=true&LAYER=';
 		url += wmsLayer.wmsName;
 
@@ -66,7 +70,7 @@ define([ 'jquery', 'message-bus', 'customization', 'module' ], function($, bus, 
 	}
 
 	/*
-	 * process layer for map
+	 * process wms layer for map
 	 * @param mapLayer: layer 
 	 * @param mapLayers: wmsLayer array
 	 * 
@@ -99,14 +103,16 @@ define([ 'jquery', 'message-bus', 'customization', 'module' ], function($, bus, 
 			mapLayer.queryUrl = url;
 		}
 		
-		//get legend for wms or image
-		if (mapLayer.legend) {
+		//get legend for wms or image - if is undefined assing auto
+		
+		if (mapLayer.legend == 'auto' || typeof mapLayer.legend == 'undefined') {
 			mapLayerType = mapLayer.type || 'wms';
-			if (mapLayer.legend == 'auto' && mapLayerType == 'wms') {
+			if ((mapLayer.legend == 'auto' || typeof mapLayer.legend == 'undefined') && mapLayerType == 'wms') {
 				mapLayer.legendURL = getGetLegendGraphicUrl(mapLayer);
 			} else {
 				mapLayer.legendURL = 'static/loc/' + customization.languageCode + '/images/' + mapLayer.legend;
 			}
+			mapLayer.legend = 'auto';
 		}
 
 		// Check info parameters

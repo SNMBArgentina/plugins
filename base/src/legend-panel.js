@@ -123,14 +123,26 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 		
 		var legendArray = [];
 		
+		//if not label in wms layer set layer label
+		var layerLabel = layerInfo.label;
+		
 		//I go through all the layers		
 		$.each(layerInfo.mapLayers, function(index, mapLayer) {
 			
+			var labelLegend = '';
+			
 			//If exist property legend
 			if (mapLayer.hasOwnProperty('legend')) {
+			
+				if (mapLayer.label == ''){
+					labelLegend = layerLabel;
+				}else{
+					labelLegend = mapLayer.label;
+				}
+				//push array label 
 				legendArray.push({
 					id: mapLayer.id,
-					label: mapLayer.label,
+					label: labelLegend,
 					legendUrl: mapLayer.legendURL,
 					sourceLink: mapLayer.sourceLink,
 					sourceLabel: mapLayer.sourceLabel,
