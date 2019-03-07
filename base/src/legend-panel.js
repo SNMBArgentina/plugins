@@ -44,7 +44,8 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 			ui.create('div', {
 				id: id + '_container',
 				parent: dialogId + '_content',
-				css: 'layer_legend_container'
+				css: 'layer_legend_container',
+				priority: 0
 			});
 
 			ui.create('div', {
@@ -121,41 +122,45 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 	//Event add layers
 	bus.listen('add-layer', function(event, layerInfo) {
 		
-		var legendArray = [];
+		//if groupId <> to "base"
+		if (layerInfo.groupId != 'base'){
 		
-		//if not label in wms layer set layer label
-		var layerLabel = layerInfo.label;
-		
-		//I go through all the layers		
-		$.each(layerInfo.mapLayers, function(index, mapLayer) {
+			var legendArray = [];
 			
-			var labelLegend = '';
+			//if not label in wms layer set layer label
+			var layerLabel = layerInfo.label;
 			
-			//If exist property legend
-			if (mapLayer.hasOwnProperty('legend')) {
-			
-				if (mapLayer.label == ''){
-					labelLegend = layerLabel;
-				}else{
-					labelLegend = mapLayer.label;
+			//I go through all the layers		
+			$.each(layerInfo.mapLayers, function(index, mapLayer) {
+				
+				var labelLegend = '';
+				
+				//If exist property legend
+				if (mapLayer.hasOwnProperty('legend')) {
+				
+					if (mapLayer.label == ''){
+						labelLegend = layerLabel;
+					}else{
+						labelLegend = mapLayer.label;
+					}
+					//push element in top array label 
+					legendArray.unshift({
+						id: mapLayer.id,
+						label: labelLegend,
+						legendUrl: mapLayer.legendURL,
+						sourceLink: mapLayer.sourceLink,
+						sourceLabel: mapLayer.sourceLabel,
+						visibility: layerInfo.active,
+						timeDependent: layerInfo.hasOwnProperty('timeStyles')
+					});
 				}
-				//push array label 
-				legendArray.push({
-					id: mapLayer.id,
-					label: labelLegend,
-					legendUrl: mapLayer.legendURL,
-					sourceLink: mapLayer.sourceLink,
-					sourceLabel: mapLayer.sourceLabel,
-					visibility: layerInfo.active,
-					timeDependent: layerInfo.hasOwnProperty('timeStyles')
-				});
+			});
+			
+			//If is insert layer update is array legend
+			if (legendArray.length > 0) {
+				legendArrayInfo[layerInfo.id] = legendArray;
 			}
-		});
-		
-		//If is insert layer update is array legend
-		if (legendArray.length > 0) {
-			legendArrayInfo[layerInfo.id] = legendArray;
-		}
+		}	
 	});
 
 	//Event change time of layer 
