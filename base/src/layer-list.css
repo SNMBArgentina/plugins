@@ -86,6 +86,17 @@ td.layer_visibility {
   cursor: pointer;
 }
 
+.layer_download_button {
+  background-image: url("images/zoom-to-object.png");
+  display: inline-block;
+  float: right;
+  height: 16px;
+  padding: 0;
+  text-decoration: none;
+  width: 16px;
+  cursor: pointer;
+}
+
 .layer_stats_button {
   background: url("images/object-indicators.png") no-repeat scroll;
   display: inline-block;
