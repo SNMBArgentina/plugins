@@ -20,7 +20,7 @@ define([ 'message-bus', 'ui/ui' ], function(bus, ui) {
 	};
 
 	bus.listen('reset-layers', function() {
-		idLinkInfo = {};
+		idDownloadInfo = {};
 	});
 
 	bus.listen('before-adding-layers', function() {
