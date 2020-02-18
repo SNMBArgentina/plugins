@@ -86,6 +86,17 @@ td.layer_visibility {
   cursor: pointer;
 }
 
+.layer_download_button {
+  background-image: url("images/zoom-to-object.png");
+  display: inline-block;
+  float: right;
+  height: 16px;
+  padding: 0;
+  text-decoration: none;
+  width: 16px;
+  cursor: pointer;
+}
+
 .ui-input-container>.layer_info_button {
   width: 20px;
 }
@@ -172,7 +183,7 @@ td.layer_visibility {
   pointer-events: auto !important;
 }
 
-.layer-info-button, .editable-layer-list-button {
+.layer-info-button, .layer-download-button, .editable-layer-list-button {
   display: inline-block !important;
   float: right !important;
 }
