@@ -86,6 +86,18 @@ td.layer_visibility {
   cursor: pointer;
 }
 
+.layer_stats_button {
+  background: url("images/object-indicators.png") no-repeat scroll;
+  display: inline-block;
+  float: right;
+  height: 16px;
+  padding-left: 2px;
+  margin-right: 50px ;
+  text-decoration: none;
+  width: 28px!important;
+  cursor: pointer;
+}
+
 .ui-input-container>.layer_info_button {
   width: 20px;
 }

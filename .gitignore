@@ -11,3 +11,5 @@ npm-debug.log
 yarn-error.log
 base/jslib
 geojson/jslib
+.idea/
+.vscode/
