@@ -11,7 +11,7 @@ define([ 'message-bus', 'ui/ui' ], function(bus, ui) {
 	var buildLink = function(id, eventName) {
 		var link = ui.create('button', {
 			id: 'layer_download_button_' + id,
-			css: 'layer_download_button',
+			css: 'layer_download_button layer_action_button',
 			clickEventCallback: function() {
 				bus.send(eventName, [ id ]);
 			}
