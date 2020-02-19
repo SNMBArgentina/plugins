@@ -77,17 +77,13 @@ td.layer_visibility {
 
 .layer_info_button {
   background: url("images/ui-elements.png") no-repeat scroll 0 -132px rgba(0, 0, 0, 0);
-  display: inline-block;
-  float: right;
-  height: 16px;
-  padding: 0;
-  text-decoration: none;
-  width: 16px;
-  cursor: pointer;
 }
 
 .layer_download_button {
-  background-image: url("images/zoom-to-object.png");
+  background: url("images/download.png") no-repeat scroll 0 -1px;
+}
+
+.layer_action_button {
   display: inline-block;
   float: right;
   height: 16px;
@@ -98,15 +94,12 @@ td.layer_visibility {
 }
 
 .layer_stats_button {
-  background: url("images/object-indicators.png") no-repeat scroll;
+  background: url("images/object-indicators.png") no-repeat;
   display: inline-block;
   float: right;
-  height: 16px;
-  padding-left: 2px;
-  margin-right: 50px ;
+  padding: 0;
   text-decoration: none;
-  width: 28px!important;
-  cursor: pointer;
+  width: 26px;
 }
 
 .ui-input-container>.layer_info_button {

@@ -13,7 +13,7 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
 	var buildLink = function(id, eventName) {
 		var link = ui.create('button', {
 			id: 'layer_info_button_' + id,
-			css: 'layer_info_button',
+			css: 'layer_info_button layer_action_button',
 			clickEventCallback: function() {
 				bus.send(eventName, [ id ]);
 			}
