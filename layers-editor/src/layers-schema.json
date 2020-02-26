@@ -327,6 +327,14 @@
             "feedback":{
               "title":"Allow user feedback",
               "type":"boolean"
+            },
+            "downloadFile":{
+              "title":"Enable download Layer",
+              "type":"boolean"
+            },
+            "stats":{
+              "title":"Layer has stats",
+              "type":"boolean"
             }
           },
           "dependencies":{
