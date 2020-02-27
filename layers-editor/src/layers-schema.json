@@ -316,8 +316,8 @@
               "title":"Time instances",
               "type":"string"
             },
-            "temp":{
-              "title":"Layer has temporality",
+            "tempFile":{
+              "title":"Temporality file",
               "type":"string"
             },
             "timeStyles":{
