@@ -316,6 +316,10 @@
               "title":"Time instances",
               "type":"string"
             },
+            "temp":{
+              "title":"Layer has temporality",
+              "type":"string"
+            },
             "timeStyles":{
               "title":"Time styles",
               "type":"string"
