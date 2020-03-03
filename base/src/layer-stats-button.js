@@ -16,6 +16,6 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
 			return null;
 		};
 
-		bus.send('register-layer-action', showInfoLayerAction);
+		//bus.send('register-layer-action', showInfoLayerAction);
 	});
 });
