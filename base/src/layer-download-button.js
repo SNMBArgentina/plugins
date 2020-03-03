@@ -2,8 +2,9 @@ define([ 'message-bus', 'ui/ui' ], function(bus, ui) {
 	var idDownloadInfo = {};
 
 	function getDownloadLink(obj) {
-		if (obj.downloadFile) {
-			return 'static/downloads/' + obj.id + '.zip';
+		if (obj.hasOwnProperty('downloadFile')) {
+			const fileName = (obj.downloadFile.indexOf('.zip') === -1) ? obj.downloadFile + '.zip' : obj.downloadFile;
+			return 'static/downloads/' + fileName;
 		}
 		return null;
 	}
@@ -25,7 +26,7 @@ define([ 'message-bus', 'ui/ui' ], function(bus, ui) {
 
 	bus.listen('before-adding-layers', function() {
 		var showDownloadLayerAction = function(portalLayer) {
-			if (getDownloadLink(portalLayer) != null) {
+			if (getDownloadLink(portalLayer) !== null) {
 				return buildLink(portalLayer.id, 'show-layer-download');
 			}
 			return null;
@@ -35,7 +36,7 @@ define([ 'message-bus', 'ui/ui' ], function(bus, ui) {
 	});
 
 	bus.listen('add-layer', function(event, layerInfo) {
-		if (getDownloadLink(layerInfo) != null) {
+		if (getDownloadLink(layerInfo) !== null) {
 			idDownloadInfo['layer-' + layerInfo.id] = {
 				'link': getDownloadLink(layerInfo),
 				'title': layerInfo.label

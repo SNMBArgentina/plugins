@@ -330,7 +330,7 @@
             },
             "downloadFile":{
               "title":"Enable download Layer",
-              "type":"boolean"
+              "type":"string"
             },
             "stats":{
               "title":"Layer has stats",
