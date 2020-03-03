@@ -83,10 +83,6 @@ td.layer_visibility {
   background: url("images/download.png") no-repeat scroll 0 -1px;
 }
 
-.layer_temp_button {
-  background: url("images/clock.png") no-repeat;
-}
-
 .layer_stats_button {
   background: url("images/object-indicators.png") no-repeat;
 }
