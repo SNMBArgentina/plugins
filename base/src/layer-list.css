@@ -83,6 +83,10 @@ td.layer_visibility {
   background: url("images/download.png") no-repeat scroll 0 -1px;
 }
 
+.layer_stats_button {
+  background: url("images/object-indicators.png") no-repeat;
+}
+
 .layer_action_button {
   display: inline-block;
   float: right;
@@ -93,14 +97,6 @@ td.layer_visibility {
   cursor: pointer;
 }
 
-.layer_stats_button {
-  background: url("images/object-indicators.png") no-repeat;
-  display: inline-block;
-  float: right;
-  padding: 0;
-  text-decoration: none;
-  width: 26px;
-}
 
 .ui-input-container>.layer_info_button {
   width: 20px;
