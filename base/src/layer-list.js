@@ -75,9 +75,19 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 		checkbox.addEventListener('change', function() {
 			bus.send('layer-visibility', [ this.id, this.checked ]);
 		});
+		let stats;
+		if (portalLayer.hasOwnProperty('stats') && portalLayer.stats === true) {
+			stats = ui.create('div', {
+				id: 'layer_stats_button_' + portalLayer.id,
+				css: 'layer_stats_button'
+			});
+		}
+		if (stats) {
+			checkbox.parentNode.appendChild(stats, checkbox);
+		}
 
 		var legend;
-		if (portalLayer.inlineLegendUrl != null) {
+		if (portalLayer.inlineLegendUrl !== null) {
 			legend = ui.create('div', {
 				id: 'layer_list_legend_' + portalLayer.id,
 				css: 'inline-legend'
