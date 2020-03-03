@@ -316,10 +316,6 @@
               "title":"Time instances",
               "type":"string"
             },
-            "tempFile":{
-              "title":"Temporality file",
-              "type":"string"
-            },
             "timeStyles":{
               "title":"Time styles",
               "type":"string"

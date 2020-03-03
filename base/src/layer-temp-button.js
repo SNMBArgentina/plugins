@@ -3,8 +3,8 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
   let idLinkTemp = {};
 
   function getTempLink(obj) {
-    if (obj.tempFile) {
-      return 'static/loc/' + customization.languageCode + '/html/' + obj.tempFile;
+    if (obj.hasOwnProperty('timeInstances') && obj.timeInstances !== "") {
+      return 'static/loc/' + customization.languageCode + '/html/temporality.html';
     }
     return null;
   }
@@ -39,7 +39,7 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
     if (getTempLink(layerInfo) != null) {
       idLinkTemp['layer-' + layerInfo.id] = {
         'link': getTempLink(layerInfo),
-        'title': layerInfo.label
+        'title': 'Herramienta Temporalidad'
       };
     }
   });
