@@ -324,6 +324,11 @@
               "title":"Date format",
               "type":"string"
             },
+            "metadataLink":{
+              "title":"Metadata Link",
+              "type":"string",
+              "format":"uri"
+            },
             "feedback":{
               "title":"Allow user feedback",
               "type":"boolean"
