@@ -38,9 +38,7 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 			var legendInfo = legendArray[i];
 			var id = dialogId + legendInfo.id;
 
-			// we get the total number of items in legend
-			let totalLayers = document.getElementsByClassName("layer_legend_container").length;
-			// the priority will be inversely proportional to the number of layers (more layers, more priority)
+			// the priority will be inversely proportional to the order of layers (last layer has less priority)
 			// so that newly added layers are on top of the legend
 			legendLastPriority -= 1; //we need the layer to have less priority than the last one
 			let position = legendLastPriority;
