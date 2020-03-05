@@ -3,13 +3,16 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 	/*
 	 * keep the information about layer legends that will be necessary when they
 	 * become visible
-	 *  
-	 * 
+	 *
+	 *
 	 */
-	
-	//array of legend data from layers 
+
+	//array of legend data from layers
 	var legendArrayInfo = {};
-	
+
+	//last priority
+	var legendLastPriority = 0;
+
 	var dialogId = 'legend_panel';
 	var divContent = null;
 
@@ -27,14 +30,21 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 		parent: dialogId
 	});
 
-	//handling of legend box components 
+	//handling of legend box components
 	var refreshLegendArray = function(legendArray) {
-	
+
 		for (var i = 0; i < legendArray.length; i++) {
-		
+
 			var legendInfo = legendArray[i];
 			var id = dialogId + legendInfo.id;
-			
+
+			// we get the total number of items in legend
+			let totalLayers = document.getElementsByClassName("layer_legend_container").length;
+			// the priority will be inversely proportional to the number of layers (more layers, more priority)
+			// so that newly added layers are on top of the legend
+			legendLastPriority -= 1; //we need the layer to have less priority than the last one
+			let position = legendLastPriority;
+
 			if (!legendInfo.visibility) {
 				var elem = document.getElementById(id + '_container');
 				if (elem) content.removeChild(elem);
@@ -45,7 +55,7 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 				id: id + '_container',
 				parent: dialogId + '_content',
 				css: 'layer_legend_container',
-				priority: 0
+				priority: position
 			});
 
 			ui.create('div', {
@@ -61,9 +71,9 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 				css: 'layer_legend_name'
 			});
 
-			//if data from the source or label in white   
+			//if data from the source or label in white
 			if (typeof legendInfo.sourceLink !== 'undefined' && typeof legendInfo.sourceLabel !== 'undefined' && legendInfo.sourceLabel !== '') {
-			
+
 				ui.create('div', {
 					id: id + '_source_label',
 					parent: id + '_header',
@@ -83,12 +93,12 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 					}
 				});
 			}
-			
+
 			//compose url legend load in box
 			var url = legendInfo.legendUrl;
 			//I verify if the url is ows replacement by wms
 			url = url.replace('/ows', '/wms');
-			
+
 			//include params time
 			if (legendInfo.timeDependent && legendInfo.timestamp) {
 				url = url + '&STYLE=' + legendInfo.timestyle + '&TIME=' + legendInfo.timestamp.toISO8601String();
@@ -102,14 +112,14 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 		}
 	};
 
-	
-	//Event open legend dialog 
+
+	//Event open legend dialog
 	bus.listen('open-legend', function(event, layerId) {
 		bus.send('ui-show', dialogId);
 	});
 
-	
-	//Event change legend dialog 
+
+	//Event change legend dialog
 	bus.listen('toggle-legend', function() {
 		bus.send('ui-toggle', dialogId);
 	});
@@ -121,29 +131,29 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 
 	//Event add layers
 	bus.listen('add-layer', function(event, layerInfo) {
-		
+
 		//if groupId <> to "base"
 		if (layerInfo.groupId != 'base'){
-		
+
 			var legendArray = [];
-			
+
 			//if not label in wms layer set layer label
 			var layerLabel = layerInfo.label;
-			
-			//I go through all the layers		
+
+			//I go through all the layers
 			$.each(layerInfo.mapLayers, function(index, mapLayer) {
-				
+
 				var labelLegend = '';
-				
+
 				//If exist property legend
 				if (mapLayer.hasOwnProperty('legend')) {
-				
+
 					if (mapLayer.label == ''){
 						labelLegend = layerLabel;
 					}else{
 						labelLegend = mapLayer.label;
 					}
-					//push element in top array label 
+					//push element in top array label
 					legendArray.unshift({
 						id: mapLayer.id,
 						label: labelLegend,
@@ -155,15 +165,15 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 					});
 				}
 			});
-			
+
 			//If is insert layer update is array legend
 			if (legendArray.length > 0) {
 				legendArrayInfo[layerInfo.id] = legendArray;
 			}
-		}	
+		}
 	});
 
-	//Event change time of layer 
+	//Event change time of layer
 	bus.listen('layer-timestamp-selected', function(e, layerId, d, style) {
 		var legendArray = legendArrayInfo[layerId];
 		if (legendArray) {
@@ -185,10 +195,10 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 		$.each(legendArray, function(index, legendInfo) {
 			legendInfo.visibility = visibility;
 		});
-		
+
 		//Update legend box
 		refreshLegendArray(legendArray);
 	});
-	
-	
+
+
 });
