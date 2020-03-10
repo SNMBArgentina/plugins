@@ -47,7 +47,14 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
   let showInfo = function(id) {
     if (idLinkMetadata.hasOwnProperty(id)) {
       let linkInfo = idLinkMetadata[id];
-      bus.send('show-info', [ linkInfo.title, linkInfo.link ]);
+      let metadataUrl = '' 
+      try {
+        metadataUrl = new URL(linkInfo.link)
+      } catch(err) {
+        bus.send('error', `Metadata Link not URL ${metadataUrl} valid`);
+        return;
+      }
+      window.open(linkInfo.link);
     }
   };
 
