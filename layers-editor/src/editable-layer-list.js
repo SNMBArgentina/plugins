@@ -82,16 +82,20 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui' 
 		var groupContainer = document.getElementById('all_layers');
 		ui.sortable(groupContainer);
 		groupContainer.addEventListener('change', function(e) {
-			var item = e.detail.item;
-			layerRoot.moveGroup(getGroupId(item.id), getParent(item), e.detail.newIndex);
+			if (e.hasOwnProperty('detail')) {
+				var item = e.detail.item;
+				layerRoot.moveGroup(getGroupId(item.id), getParent(item), e.detail.newIndex);
+			}
 		});
 
 		var containers = document.getElementsByClassName('layer-list-accordion accordion-content');
 		Array.prototype.forEach.call(containers, function(container) {
 			ui.sortable(container);
 			container.addEventListener('change', function(e) {
-				var item = e.detail.item;
-				layerRoot.moveLayer(getLayerId(item.id), getParent(item), e.detail.newIndex);
+				if (e.hasOwnProperty('detail')) {
+					var item = e.detail.item;
+					layerRoot.moveLayer(getLayerId(item.id), getParent(item), e.detail.newIndex);
+				}
 			});
 		});
 	});
