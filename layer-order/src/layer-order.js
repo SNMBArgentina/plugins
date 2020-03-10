@@ -5,9 +5,13 @@
 'use strict';
 
 define([ 'layout', 'module', 'toolbar', 'i18n', 'jquery', 'message-bus', 'ui/ui' ], function(layout, module, toolbar, i18n, $, bus, ui) {
+	var layerRoot;
 	var dialogId = 'layer-order-pane';
-
 	var layers = [];
+
+	bus.listen('layers-loaded', function(e, newLayersRoot) {
+		layerRoot = JSON.parse(JSON.stringify(newLayersRoot));
+	});
 
 	// Create ui components
 	ui.create('button', {
@@ -23,25 +27,23 @@ define([ 'layout', 'module', 'toolbar', 'i18n', 'jquery', 'message-bus', 'ui/ui'
 		id: dialogId,
 		parent: layout.map.attr('id'),
 		title: i18n.layer_order,
+		css: 'layer-order-pane',
 		closeButton: true
 	});
 	var content = ui.create('div', {
 		id: dialogId + '-content',
+		css: 'layer-order-pane-content',
 		parent: dialogId
 	});
 
 	ui.sortable(content);
-	content.addEventListener('change', function() {
-		// TODO implementar
-		// var newLayersOrder = jcontent.sortable('toArray');
-		// for (var i = 0; i < newLayersOrder.length; i++) {
-		// TODO update layers json and reload all layers
-		// var id = newLayersOrder[i];
-		// var layer = map.getLayer(id);
-		// if (layer) {
-		// map.setLayerIndex(layer, i);
-		// }
-		// }
+	content.addEventListener('change', (event) => {
+		let layerId = event.detail.item.id.replace('-order-item', '');
+		let index = event.detail.newIndex;
+		bus.send('map:setLayerIndex', {
+			layerId,
+			index
+		});
 	});
 
 	// Link dialog visibility and toolbar button
@@ -66,14 +68,23 @@ define([ 'layout', 'module', 'toolbar', 'i18n', 'jquery', 'message-bus', 'ui/ui'
 		content.innerHTML = '';
 	});
 
+	function getLabelLayer (layerId) {
+		const portalLayer = layerRoot.portalLayers.filter(thePortalLayer => thePortalLayer.layers.indexOf(layerId) !== -1);
+		if (portalLayer && portalLayer.length === 1 && portalLayer[0].hasOwnProperty('label')) {
+			return portalLayer[0].label;
+		}
+	};
+
 	bus.listen('layers-loaded', function() {
-		for ( var n in layers) {
+		console.log(layerRoot);
+		for (let n in layers) {
 			var layer = layers[n];
+			console.log(getLabelLayer(layer.id))
 			ui.create('div', {
-				id: layer.id,
+				id: `${layer.id}-order-item`,
 				parent: dialogId + '-content',
 				css: 'layer-order-item',
-				html: layer.id
+				html: getLabelLayer(layer.id)
 			});
 		}
 	});
