@@ -39,11 +39,17 @@ define([ 'layout', 'module', 'toolbar', 'i18n', 'jquery', 'message-bus', 'ui/ui'
 	ui.sortable(content);
 	content.addEventListener('change', (event) => {
 		let layerId = event.detail.item.id.replace('-order-item', '');
-		let index = event.detail.newIndex;
+		let newIndex = event.detail.newIndex;
+		let oldIndex = event.detail.oldIndex;
 		bus.send('map:setLayerIndex', {
 			layerId,
-			index
+			newIndex
 		});
+
+		const wmsLayerToMove = layerRoot.wmsLayers.splice(oldIndex, 1);
+		layerRoot.wmsLayers.splice(newIndex, 0, wmsLayerToMove[0]);
+
+		bus.send('layers-set-root', layerRoot);
 	});
 
 	// Link dialog visibility and toolbar button
@@ -73,13 +79,12 @@ define([ 'layout', 'module', 'toolbar', 'i18n', 'jquery', 'message-bus', 'ui/ui'
 		if (portalLayer && portalLayer.length === 1 && portalLayer[0].hasOwnProperty('label')) {
 			return portalLayer[0].label;
 		}
-	};
+		return null;
+	}
 
 	bus.listen('layers-loaded', function() {
-		console.log(layerRoot);
-		for (let n in layers) {
-			var layer = layers[n];
-			console.log(getLabelLayer(layer.id))
+		for (let n in layerRoot.wmsLayers) {
+			var layer = layerRoot.wmsLayers[n];
 			ui.create('div', {
 				id: `${layer.id}-order-item`,
 				parent: dialogId + '-content',
@@ -90,8 +95,8 @@ define([ 'layout', 'module', 'toolbar', 'i18n', 'jquery', 'message-bus', 'ui/ui'
 	});
 
 	bus.listen('add-layer', function(e, layerInfo) {
-		for (var index = 0; index < layerInfo.mapLayers.length; index++) {
-			var mapLayer = layerInfo.mapLayers[index];
+		for (var newIndex = 0; newIndex < layerInfo.mapLayers.length; newIndex++) {
+			var mapLayer = layerInfo.mapLayers[newIndex];
 			layers.push(mapLayer);
 		}
 	});
