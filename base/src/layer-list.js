@@ -55,7 +55,7 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 
 		for (var i = 0; i < groupActions.length; i++) {
 			var elem = groupActions[i](groupInfo);
-			if (elem) {
+			if (elem && accordionGroup.header) {
 				accordionGroup.header.appendChild(elem[0]);
 			}
 		}
