@@ -176,6 +176,9 @@ define([ 'message-bus', 'module', './geojson', 'openlayers' ], function(bus, mod
 		}
 		if (layer != null) {
 			layer.id = message.layerId;
+			//we set layer visibility later (with layer-visibility event), so we need to set it to false
+			//otherwise layer-visibility event can arrive too late and ol2 makes unnecessary tile requests
+			layer.setVisibility(false);
 			getMap().addLayer(layer);
 			bus.send('map:layerAdded', [ message ]);
 		}
