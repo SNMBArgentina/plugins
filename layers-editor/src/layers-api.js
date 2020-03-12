@@ -30,7 +30,7 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 	function decorateCommons(o) {
 		o.merge = function(data) {
 			$.extend(o, data);
-			//bus.send('layers-set-root', layerRoot);
+			bus.send('layers-set-root', layerRoot);
 		};
 	}
 
