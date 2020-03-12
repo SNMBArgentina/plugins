@@ -39,15 +39,15 @@ define([ 'layout', 'module', 'toolbar', 'i18n', 'jquery', 'message-bus', 'ui/ui'
 	ui.sortable(content);
 	content.addEventListener('change', (event) => {
 		let layerId = event.detail.item.id.replace('-order-item', '');
-		let newIndex = event.detail.newIndex;
+		let index = event.detail.newIndex;
 		let oldIndex = event.detail.oldIndex;
 		bus.send('map:setLayerIndex', {
 			layerId,
-			newIndex
+			index
 		});
 
 		const wmsLayerToMove = layerRoot.wmsLayers.splice(oldIndex, 1);
-		layerRoot.wmsLayers.splice(newIndex, 0, wmsLayerToMove[0]);
+		layerRoot.wmsLayers.splice(index, 0, wmsLayerToMove[0]);
 
 		bus.send('layers-set-root', layerRoot);
 	});
