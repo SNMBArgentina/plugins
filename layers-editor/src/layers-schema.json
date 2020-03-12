@@ -324,8 +324,21 @@
               "title":"Date format",
               "type":"string"
             },
+            "metadataLink":{
+              "title":"Metadata Link",
+              "type":"string",
+              "format":"uri"
+            },
             "feedback":{
               "title":"Allow user feedback",
+              "type":"boolean"
+            },
+            "downloadFile":{
+              "title":"Enable download Layer",
+              "type":"boolean"
+            },
+            "stats":{
+              "title":"Layer has stats",
               "type":"boolean"
             }
           },

@@ -77,6 +77,13 @@ td.layer_visibility {
 
 .layer_info_button {
   background: url("images/ui-elements.png") no-repeat scroll 0 -132px rgba(0, 0, 0, 0);
+}
+
+.layer_download_button {
+  background: url("images/download.png") no-repeat scroll 0 -1px;
+}
+
+.layer_action_button {
   display: inline-block;
   float: right;
   height: 16px;
