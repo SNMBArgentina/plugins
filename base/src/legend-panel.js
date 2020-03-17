@@ -16,6 +16,12 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 	var dialogId = 'legend_panel';
 	var divContent = null;
 
+	var layerRoot;
+
+	bus.listen('layers-loaded', function(e, newLayersRoot) {
+		layerRoot = JSON.parse(JSON.stringify(newLayersRoot));
+	});
+
 	//create dialog panel legend
 	ui.create('dialog', {
 		id: dialogId,
@@ -30,6 +36,18 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 		parent: dialogId
 	});
 
+	var getLegendGroupActive = function(legendGroup) {
+		var count = 0;
+		for (let n in layerRoot.portalLayers) {
+			var layer = layerRoot.portalLayers[n];
+			//TODO: get the wmsLayer, not the portalLayer (to check legendGroup)
+			if(layer.legendGroup && layer.legendGroup == legendGroup) {
+				if(layer.active) count ++;
+			}
+		}
+		return count;
+	};
+
 	//handling of legend box components
 	var refreshLegendArray = function(legendArray) {
 
@@ -37,13 +55,32 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 
 			var legendInfo = legendArray[i];
 			var id = dialogId + legendInfo.id;
+			var label = legendInfo.label;
 
 			// the priority will be inversely proportional to the order of layers (last layer has less priority)
 			// so that newly added layers are on top of the legend
 			legendLastPriority -= 1; //we need the layer to have less priority than the last one
 			let position = legendLastPriority;
 
+			if(legendInfo.legendGroup) {
+				if(getLegendGroupActive(legendInfo.legendGroup) > 0) {
+					//do nothing, group is already active
+					continue;
+				} else {
+					id = legendInfo.legendGroup;
+					label = legendInfo.legendGroupLabel;
+				}
+			}
+
 			if (!legendInfo.visibility) {
+				if(legendInfo.legendGroup) {
+					if(getLegendGroupActive(legendInfo.legendGroup) > 1) {
+						//don't remove the layer, there are others of the same group
+						continue;
+					} else {
+						id = legendInfo.legendGroup;
+					}
+				}
 				var elem = document.getElementById(id + '_container');
 				if (elem) content.removeChild(elem);
 				continue;
@@ -65,7 +102,7 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 			ui.create('div', {
 				id: id + '_layer_name',
 				parent: id + '_header',
-				html: legendInfo.label,
+				html: label,
 				css: 'layer_legend_name'
 			});
 
@@ -159,6 +196,8 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 						sourceLink: mapLayer.sourceLink,
 						sourceLabel: mapLayer.sourceLabel,
 						visibility: layerInfo.active,
+						legendGroup: mapLayer.legendGroup,
+						legendGroupLabel: mapLayer.legendGroupLabel,
 						timeDependent: layerInfo.hasOwnProperty('timeStyles')
 					});
 				}
