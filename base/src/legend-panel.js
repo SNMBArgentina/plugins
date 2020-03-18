@@ -18,10 +18,6 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 
 	var layerRoot;
 
-	bus.listen('layers-loaded', function(e, newLayersRoot) {
-		layerRoot = JSON.parse(JSON.stringify(newLayersRoot));
-	});
-
 	//create dialog panel legend
 	ui.create('dialog', {
 		id: dialogId,
@@ -36,13 +32,14 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 		parent: dialogId
 	});
 
+	// returns how many layers of the given legendGroup are active
 	var getLegendGroupActive = function(legendGroup) {
 		var count = 0;
-		for (let n in layerRoot.portalLayers) {
-			var layer = layerRoot.portalLayers[n];
-			//TODO: get the wmsLayer, not the portalLayer (to check legendGroup)
+		for (let n in legendArrayInfo) {
+			var layer = legendArrayInfo[n][0];
+			//is there a layer of the same legend group remaining?
 			if(layer.legendGroup && layer.legendGroup == legendGroup) {
-				if(layer.active) count ++;
+				if(layer.visibility) count++;
 			}
 		}
 		return count;
@@ -63,7 +60,7 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 			let position = legendLastPriority;
 
 			if(legendInfo.legendGroup) {
-				if(getLegendGroupActive(legendInfo.legendGroup) > 0) {
+				if(getLegendGroupActive(legendInfo.legendGroup) > 1) {
 					//do nothing, group is already active
 					continue;
 				} else {
@@ -74,7 +71,7 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 
 			if (!legendInfo.visibility) {
 				if(legendInfo.legendGroup) {
-					if(getLegendGroupActive(legendInfo.legendGroup) > 1) {
+					if(getLegendGroupActive(legendInfo.legendGroup) > 0) {
 						//don't remove the layer, there are others of the same group
 						continue;
 					} else {
