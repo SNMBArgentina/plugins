@@ -27,13 +27,13 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
 
 	bus.listen('before-adding-layers', function() {
 		var showInfoLayerAction = function(portalLayer) {
-			if (getInfoLink(portalLayer) != null) {
+			if (getInfoLink(portalLayer) !== null) {
 				return buildLink(portalLayer.id, 'show-layer-info');
 			}
 			return null;
 		};
 		var showInfoGroupAction = function(group) {
-			if (getInfoLink(group) != null) {
+			if (getInfoLink(group) !== null) {
 				return buildLink(group.id, 'show-group-info');
 			}
 			return null;
@@ -44,7 +44,7 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
 	});
 
 	bus.listen('add-layer', function(event, layerInfo) {
-		if (getInfoLink(layerInfo) != null) {
+		if (getInfoLink(layerInfo) !== null) {
 			idLinkInfo['layer-' + layerInfo.id] = {
 				'link': getInfoLink(layerInfo),
 				'title': layerInfo.label
@@ -53,7 +53,7 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
 	});
 
 	bus.listen('add-group', function(event, groupInfo) {
-		if (getInfoLink(groupInfo) != null) {
+		if (getInfoLink(groupInfo) !== null) {
 			idLinkInfo['group-' + groupInfo.id] = {
 				'link': getInfoLink(groupInfo),
 				'title': groupInfo.label

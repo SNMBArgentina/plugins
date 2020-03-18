@@ -1,14 +1,14 @@
 define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization, ui) {
-
+  
   let idLinkMetadata = {};
-
+  
   function getMetadataLink(obj) {
     if (obj.hasOwnProperty('metadataLink') && obj.metadataLink !== "") {
       return obj.metadataLink;
     }
     return null;
   }
-
+  
   let buildButton = function(id, eventName) {
     let link = ui.create('button', {
       id: 'layer_metadata_button_' + id,
@@ -19,11 +19,11 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
     });
     return $(link);
   };
-
+  
   bus.listen('reset-layers', () => {
     idLinkMetadata = {};
   });
-
+  
   bus.listen('before-adding-layers', () => {
     let showMetadataLayerAction = (portalLayer) => {
       if (getMetadataLink(portalLayer) != null) {
@@ -31,10 +31,10 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
       }
       return null
     };
-
+    
     bus.send("register-layer-action", showMetadataLayerAction);
   });
-
+  
   bus.listen('add-layer', function(event, layerInfo) {
     if (getMetadataLink(layerInfo) != null) {
       idLinkMetadata['layer-' + layerInfo.id] = {
@@ -43,7 +43,7 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
       };
     }
   });
-
+  
   let showInfo = function(id) {
     if (idLinkMetadata.hasOwnProperty(id)) {
       let linkInfo = idLinkMetadata[id];
@@ -57,7 +57,7 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
       window.open(linkInfo.link);
     }
   };
-
+  
   bus.listen('show-layer-metadata', function(event, layerId) {
     showInfo('layer-' + layerId);
   });

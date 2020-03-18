@@ -83,6 +83,23 @@ td.layer_visibility {
   background: url("images/download.png") no-repeat scroll 0 -1px;
 }
 
+.layer_stats_button {
+  background: url(images/ui-elements.png) no-repeat scroll 0 -148px rgba(0, 0, 0, 0);
+  width: 25px;
+  height: 16px;
+}
+
+.layer_metadata_button {
+  background: url("images/metadata.png") no-repeat;
+  display: inline-block;
+  float: right;
+  height: 15px;
+  padding: 0;
+  text-decoration: none;
+  width: 19px;
+  cursor: pointer;
+}
+
 .layer_action_button {
   display: inline-block;
   float: right;
