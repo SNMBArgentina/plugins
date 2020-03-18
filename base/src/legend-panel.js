@@ -36,10 +36,10 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 	var getLegendGroupActive = function(legendGroup) {
 		var count = 0;
 		for (let n in legendArrayInfo) {
-			var layer = legendArrayInfo[n][0];
-			//is there a layer of the same legend group remaining?
-			if(layer.legendGroup && layer.legendGroup == legendGroup) {
-				if(layer.visibility) count++;
+			var layer = legendArrayInfo[n];
+			//how many layers of the same legend group are visible?
+			if(layer[0] && layer[0].legendGroup && (layer[0].legendGroup == legendGroup)) {
+				if(layer[0].visibility) count++;
 			}
 		}
 		return count;
