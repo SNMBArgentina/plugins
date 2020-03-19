@@ -272,6 +272,10 @@
           "title":"Info Link",
           "type":"string",
           "format":"uri"
+        },
+        "sameLegend":{
+          "title":"Same legend",
+          "type":"boolean"
         }
       },
       "required":[

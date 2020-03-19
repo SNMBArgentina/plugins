@@ -16,7 +16,9 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 	var dialogId = 'legend_panel';
 	var divContent = null;
 
-	var layerRoot;
+	//get groups to know if they have same legend
+	var groupsSameLegend = [];
+	var groupsSameLegendLabel = [];
 
 	//create dialog panel legend
 	ui.create('dialog', {
@@ -33,12 +35,12 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 	});
 
 	// returns how many layers of the given legendGroup are active
-	var getLegendGroupActive = function(legendGroup) {
+	var getGroupActive = function(legendGroup) {
 		var count = 0;
 		for (let n in legendArrayInfo) {
 			var layer = legendArrayInfo[n];
 			//how many layers of the same legend group are visible?
-			if(layer[0] && layer[0].legendGroup && (layer[0].legendGroup == legendGroup)) {
+			if(layer[0] && layer[0].groupId && (layer[0].groupId == legendGroup)) {
 				if(layer[0].visibility) count++;
 			}
 		}
@@ -59,23 +61,23 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 			legendLastPriority -= 1; //we need the layer to have less priority than the last one
 			let position = legendLastPriority;
 
-			if(legendInfo.legendGroup) {
-				if(getLegendGroupActive(legendInfo.legendGroup) > 1) {
+			if(groupsSameLegend.indexOf(legendInfo.groupId) != -1) {
+				if(getGroupActive(legendInfo.groupId) > 1) {
 					//do nothing, group is already active
 					continue;
 				} else {
-					id = legendInfo.legendGroup;
-					label = legendInfo.legendGroupLabel;
+					id = legendInfo.groupId;
+					label = groupsSameLegendLabel[groupsSameLegend.indexOf(legendInfo.groupId)];
 				}
 			}
 
 			if (!legendInfo.visibility) {
-				if(legendInfo.legendGroup) {
-					if(getLegendGroupActive(legendInfo.legendGroup) > 0) {
+				if(groupsSameLegend.indexOf(legendInfo.groupId) != -1) {
+					if(getGroupActive(legendInfo.groupId) > 0) {
 						//don't remove the layer, there are others of the same group
 						continue;
 					} else {
-						id = legendInfo.legendGroup;
+						id = legendInfo.groupId;
 					}
 				}
 				var elem = document.getElementById(id + '_container');
@@ -159,6 +161,16 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 	//Event clean layers
 	bus.listen('reset-layers', function() {
 		legendArrayInfo = {};
+		groupsSameLegend = [];
+		groupsSameLegendLabel = [];
+	});
+
+	//Event clean layers
+	bus.listen('add-group', function(event, group) {
+		if(group.sameLegend) {
+			groupsSameLegend.push(group.id);
+			groupsSameLegendLabel.push(group.label);
+		}
 	});
 
 	//Event add layers
@@ -193,8 +205,7 @@ define([ 'jquery', 'i18n', 'customization', 'message-bus', 'layout', 'ui/ui' ], 
 						sourceLink: mapLayer.sourceLink,
 						sourceLabel: mapLayer.sourceLabel,
 						visibility: layerInfo.active,
-						legendGroup: mapLayer.legendGroup,
-						legendGroupLabel: mapLayer.legendGroupLabel,
+						groupId: layerInfo.groupId,
 						timeDependent: layerInfo.hasOwnProperty('timeStyles')
 					});
 				}
