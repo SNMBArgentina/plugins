@@ -110,6 +110,10 @@ td.layer_visibility {
   cursor: pointer;
 }
 
+.ui-input-container, .ui-text-area-field-container {
+	display: block;
+}
+
 .ui-input-container>.layer_info_button {
   display: block;
 }
@@ -164,8 +168,8 @@ td.layer_visibility {
 .layer-list-accordion-header {
   color: white;
   padding: 10px;
-  margin-bottom: 5px;
   background: #38c;
+  margin: 5px;
 }
 
 .layer-list-accordion.accordion-content {
