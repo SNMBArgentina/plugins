@@ -91,8 +91,7 @@ td.layer_visibility {
 
 .layer_stats_button {
   background: url(images/ui-elements.png) no-repeat scroll 0 -148px rgba(0, 0, 0, 0);
-  /* width: 22px !important; */
-  margin: 0px 2px;
+  margin-right: 4px;
 }
 
 .layer_metadata_button {
