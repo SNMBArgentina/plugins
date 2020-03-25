@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.github.geoladris</groupId>
+		<artifactId>plugins</artifactId>
+		<version>7.0.1-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.github.geoladris.plugins</groupId>
+	<artifactId>measure-tools</artifactId>
+	<name>Measure Tools</name>
+	<description>Measure Tools plugin for Geoladris</description>
+	<url>https://github.com/geoladris/plugins</url>
+
+	<scm>
+		<connection>scm:git:git://github.com/geoladris/plugins.git</connection>
+		<developerConnection>scm:git:ssh://github.com:geoladris/plugins.git</developerConnection>
+		<url>http://github.com/geoladris/plugins/tree/master/layers-editor</url>
+	</scm>
+</project>
