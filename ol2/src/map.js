@@ -54,6 +54,15 @@ define([ 'message-bus', 'module', './geojson', 'openlayers' ], function(bus, mod
 			controls: [],
 			numZoomLevels: config.numZoomLevels || 20
 		});
+
+		map.events.register('mousemove', map, event => {
+			let position = map.getLonLatFromViewPortPx(event.xy).transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:4326'));
+			let xy = event.xy;
+			bus.send('map:mousemove', {
+				position,
+				xy
+			});
+		});
 	});
 
 	bus.listen('map:layerVisibility', function(event, message) {
