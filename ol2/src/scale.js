@@ -1,5 +1,5 @@
 define([ './controlRegistry' ], function(controlRegistry) {
 	controlRegistry.registerControl('scale', function(message) {
-		return new OpenLayers.Control.Scale();
+		return new OpenLayers.Control.Scale(null, {displayClass: 'olControlScale olNumericScale'});
 	});
 });
