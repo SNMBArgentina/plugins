@@ -1,6 +1,6 @@
 .olControlScale {
-	bottom: 0;
-	right: 0;
+	bottom: 0 !important;
+	right: 0 !important;
 	color: #fff;
 	padding: 0.6em;
 	background-color: #000;
