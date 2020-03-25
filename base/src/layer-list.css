@@ -110,7 +110,7 @@ td.layer_visibility {
   cursor: pointer;
 }
 
-.ui-input-container, .ui-text-area-field-container {
+.layer-list-accordion > .ui-input-container {
 	display: block;
 }
 
