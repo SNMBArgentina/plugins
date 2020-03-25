@@ -1,4 +1,4 @@
-define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/ui' ], function($, bus, layerListSelector, i18n, moment, ui) {
+define([ 'jquery', 'message-bus', 'layout', 'layer-list-selector', 'i18n', 'moment', 'ui/ui' ], function($, bus, layout, layerListSelector, i18n, moment, ui) {
 	//variables global
 	var layerActions = [];
 	var groupActions = [];
@@ -13,6 +13,20 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 		id: 'all_layers',
 		parent: 'layers_container',
 		css: 'layers-accordion'
+	});
+
+	var toggleButton = ui.create('button', {
+		id: 'toggle_layers_button',
+		parent: layout.map.attr('id'),
+		css: 'blue_button',
+		html: "<<",
+		clickEventName: 'toggle-layers'
+	});
+
+	//Event change legend dialog
+	bus.listen('toggle-layers', function() {
+		bus.send('ui-toggle', 'layers_container');
+		bus.send('ui-toggle', 'layer_list_selector_pane');
 	});
 
 	layerListSelector.registerLayerPanel('all_layers_selector', 10, i18n.layers, all_layers);
