@@ -1,27 +1,29 @@
 define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, layout, ui, controlRegistry) {
-	ui.create('button', {
-		id: 'toggle_measure_area',
-		parent: layout.map.attr('id'),
-		clickEventName: 'toogle-measure-area'
-	});
-	ui.create('button', {
-		id: 'toggle_measure_longitude',
-		parent: layout.map.attr('id'),
-		clickEventName: 'toogle-measure-longitude'
+    ui.create('button', {
+        id: 'toggle_measure_area',
+        parent: layout.map.attr('id'),
+        clickEventName: 'toogle-measure-area'
     });
-
+    ui.create('button', {
+        id: 'toggle_measure_longitude',
+        parent: layout.map.attr('id'),
+        clickEventName: 'toogle-measure-longitude'
+    });
+    
     // Create the tooltip
-	const tooltip = ui.create('div', {
+    const tooltip = ui.create('div', {
         id: 'measure-tooltip',
         parent: layout.map.attr('id'),
-		css: 'ol-tooltip'
-	});
-
+        css: 'ol-tooltip'
+    });
+    
     let activated = {
         'line': false,
         'polygon': false
     }
-
+    
+    let isFinished = true
+    
     const sketchSymbolizers = {
         "Point": {
             pointRadius: 4,
@@ -46,38 +48,67 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
             fillOpacity: 0.3
         }
     };
-
+    
     const style = new OpenLayers.Style();
     style.addRules([
         new OpenLayers.Rule({symbolizer: sketchSymbolizers})
     ]);
     const styleMap = new OpenLayers.StyleMap({"default": style});
-
-    const handleMeasurements = event => {
-		let units = event.units;
-		let order = event.order;
-		let measure = event.measure;
+    
+    function toogleVisibilityTooltip() {
+        const $tooltip = $(tooltip)
+        if ($tooltip.is(":visible")) {
+            $tooltip.hide()
+        } else {
+            $tooltip.show()
+        }
+    }
+    
+    function createText(event) {
+        let units = event.units;
+        let order = event.order;
+        let measure = event.measure;
         let out = "";
-		
-		if (order == 1) {
-			out += "distancia: " + measure.toFixed(3) + " " + units;
-		} else {
-			out += "area: " + measure.toFixed(3) + " " + units + "2";
+        
+        if (order == 1) {
+            out += "distancia: " + measure.toFixed(3) + " " + units;
+        } else {
+            out += "area: " + measure.toFixed(3) + " " + units + "2";
         }
         
         let text = document.createTextNode(out)
         text.id = 'measure-text'
-		
-		bus.listen('map:mousemove', (event, message) => {
+        
+        return text
+    }
+    
+    function handleMeasurementPartial(event) {
+        if (isFinished) {
+            tooltip.removeChild(tooltip.childNodes[0]);
+            bus.send('map:activatemousemove')
+        }
+        const text = createText(event)
+        const callback = function(e, message) {
             if (tooltip.childNodes.length !== 0) {
                 tooltip.removeChild(tooltip.childNodes[0]);
             }
+            console.log(text)
             tooltip.appendChild(text);
             tooltip.style.left = message.xy.x + 4
             tooltip.style.top = message.xy.y + 4
-        })
+        }
+        bus.listen('map:mousemove', callback)
+        isFinished = false;
     }
     
+    function handleMeasure(event) {
+        const text = createText(event);
+        tooltip.removeChild(tooltip.childNodes[0]);
+        tooltip.appendChild(text);
+        bus.send('map:deactivatemousemove')
+        isFinished = true
+    }
+
     controlRegistry.registerControl('measureControlArea', function(message) {
         let control = new OpenLayers.Control.Measure(OpenLayers.Handler.Polygon, {
             persist : true,
@@ -87,10 +118,10 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
                 }
             }
         })
-
+        
         control.events.on({
-			"measure" : handleMeasurements,
-			"measurepartial" : handleMeasurements
+            "measure" : handleMeasure,
+            "measurepartial" : handleMeasurementPartial
         });
         
         return control;
@@ -105,10 +136,10 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
                 }
             }
         })
-
+        
         control.events.on({
-			"measure" : handleMeasurements,
-			"measurepartial" : handleMeasurements
+            "measure" : handleMeasure,
+            "measurepartial" : handleMeasurementPartial
         });
         
         return control;
@@ -119,36 +150,36 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
             'controlId': 'measureControlLongitude',
             'controlType': 'measureControlLongitude'
         });
-
+        
         bus.send('map:createControl', {
             'controlId': 'measureControlArea',
             'controlType': 'measureControlArea'
         });
     });
     
-    bus.listen('toogle-measure-longitude', (e) => {
-        if (activated.line) {
+    function toogleActivation(controlType, controlId) {
+        if (activated[controlType]) {
             bus.send('map:deactivateControl', {
-                'controlId': 'measureControlLongitude'
+                'controlId': controlId
             });
+            bus.send('map:deactivatemousemove')
+            tooltip.removeChild(tooltip.childNodes[0]);
         } else {
             bus.send('map:activateControl', {
-                'controlId': 'measureControlLongitude'
+                'controlId': controlId
             });
+            bus.send('map:activatemousemove')
         }
-        activated.line = !activated.line
+        toogleVisibilityTooltip();
+        activated[controlType] = !activated[controlType];
+        isFinished = !isFinished;
+    }
+    
+    bus.listen('toogle-measure-longitude', e => {
+        toogleActivation('line', 'measureControlLongitude');
     });
     
     bus.listen('toogle-measure-area', (e) => {
-        if (activated.polygon) {
-            bus.send('map:deactivateControl', {
-                'controlId': 'measureControlArea'
-            });
-        } else {
-            bus.send('map:activateControl', {
-                'controlId': 'measureControlArea'
-            });
-        }
-        activated.polygon = !activated.polygon
+        toogleActivation('polygon', 'measureControlArea');
     });
 });
