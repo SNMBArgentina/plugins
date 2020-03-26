@@ -13,6 +13,13 @@
   display: block;
 }
 
+#toggle_layers_button{
+  position: absolute;
+  left: 10px;
+  top: 0px;
+  z-index: 750; /*to be on top of layer list and map */
+}
+
 #all_layers {
   position: relative;
   top: 0;
