@@ -27,7 +27,14 @@ define([ 'jquery', 'message-bus', 'layout', 'layer-list-selector', 'i18n', 'mome
 	bus.listen('toggle-layers', function() {
 		bus.send('ui-toggle', 'layers_container');
 		bus.send('ui-toggle', 'layer_list_selector_pane');
+		toggleIcon();
 	});
+
+	var toggleIcon = function() {
+		var buttonDiv = toggleButton.firstElementChild;
+		if(buttonDiv.innerHTML == "&gt;&gt;") buttonDiv.innerHTML = "&lt;&lt;";
+		else buttonDiv.innerHTML = "&gt;&gt;";
+	}
 
 	layerListSelector.registerLayerPanel('all_layers_selector', 10, i18n.layers, all_layers);
 
