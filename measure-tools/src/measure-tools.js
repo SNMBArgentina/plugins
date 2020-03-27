@@ -58,10 +58,12 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
         let measure = event.measure;
         let out = "";
 
+        const significativeMeasure = Math.round(measure * 100) / 100;
+        
         if (order == 1) {
-            out += "distancia: " + measure.toFixed(3) + " " + units;
+            out += "distancia: " + significativeMeasure.toString() + " " + units;
         } else {
-            out += "area: " + measure.toFixed(3) + " " + units + "2";
+            out += "area: " + significativeMeasure.toString() + " " + units + "2";
         }
 
         let text = document.createTextNode(out)
