@@ -1,5 +1,5 @@
 #welcome_panel {
-	min-width: 400px;
+	/* min-width: 400px; */
 	position: absolute;
 	top: 25%;
 	left: 30%;
@@ -10,12 +10,11 @@
 
 #welcome_panel_content {
 	background-color: #fff;
-	width: 450px;
-    height: 290px;
-	overflow: hidden;
+	max-width: 450px;
+  max-height: 340px;
+	overflow-x: hidden;
 	text-align: left;
 	padding-top: 20px;
     padding-left: 10px;
-    padding-right: 10px;	
+    padding-right: 10px;
 }
-
