@@ -56,21 +56,11 @@ define([ 'message-bus', 'module', './geojson', 'openlayers' ], function(bus, mod
 		});
 	});
 
-	function onMouseMove(event) {
-		let position = map.getLonLatFromViewPortPx(event.xy).transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:4326'));
-		let xy = event.xy;
-		bus.send('map:mousemove', {
-			position,
-			xy
+	bus.listen('map:getpixelfromlonlat', function(event, message) {
+		var mapPoint = new OpenLayers.LonLat(message.lon, message.lat);
+		bus.send('map:pixelfromlonlat', {
+			xy: getMap().getPixelFromLonLat(mapPoint)
 		});
-	}
-
-	bus.listen('map:activatemousemove', function() {
-		map.events.register('mousemove', map, onMouseMove);
-	});
-
-	bus.listen('map:deactivatemousemove', function() {
-		map.events.unregister('mousemove', map, onMouseMove);
 	});
 
 	bus.listen('map:layerVisibility', function(event, message) {
