@@ -56,6 +56,13 @@ define([ 'message-bus', 'module', './geojson', 'openlayers' ], function(bus, mod
 		});
 	});
 
+	bus.listen('map:getpixelfromlonlat', function(event, message) {
+		var mapPoint = new OpenLayers.LonLat(message.lon, message.lat);
+		bus.send('map:pixelfromlonlat', {
+			xy: getMap().getPixelFromLonLat(mapPoint)
+		});
+	});
+
 	bus.listen('map:layerVisibility', function(event, message) {
 		if (googleLayers && googleLayers[message.layerId]) {
 			googleLayers[message.layerId].visibility = message.visibility;
