@@ -17,10 +17,7 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
         css: 'ol-tooltip'
     });
     
-    let activated = {
-        'line': false,
-        'polygon': false
-    }
+    let controlActivated = undefined 
     
     const sketchSymbolizers = {
         "Point": {
@@ -130,31 +127,46 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
         
         return control;
     });
+
+    const CONTROLS = {
+        'polygon': 'measureControlArea',
+        'line': 'measureControlLongitude'
+    }
     
     bus.listen('modules-loaded', function(e, message) {
         bus.send('map:createControl', {
-            'controlId': 'measureControlLongitude',
-            'controlType': 'measureControlLongitude'
+            'controlId': CONTROLS.line,
+            'controlType': CONTROLS.line
         });
         
         bus.send('map:createControl', {
-            'controlId': 'measureControlArea',
-            'controlType': 'measureControlArea'
+            'controlId': CONTROLS.polygon,
+            'controlType': CONTROLS.polygon
         });
     });
     
     function toogleActivation(controlType, controlId) {
-        if (activated[controlType]) {
+        if (controlActivated && controlActivated === controlId) {
             bus.send('map:deactivateControl', {
-                'controlId': controlId
+                'controlId': CONTROLS[controlType]
             });
+            controlActivated = undefined
+            removeTooltip()
+        } else if (controlActivated && controlActivated !== controlId ) {
+            bus.send('map:deactivateControl', {
+                'controlId': controlActivated
+            });
+            bus.send('map:activateControl', {
+                'controlId': CONTROLS[controlType]
+            });
+            controlActivated = CONTROLS[controlType]
             removeTooltip()
         } else {
             bus.send('map:activateControl', {
-                'controlId': controlId
+                'controlId': CONTROLS[controlType]
             });
+            controlActivated = CONTROLS[controlType]
         }
-        activated[controlType] = !activated[controlType];
     }
     
     bus.listen('toogle-measure-longitude', e => {
