@@ -58,8 +58,8 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
         let measure = event.measure;
         let out = "";
 
-        const significativeMeasure = Math.round(measure * 100) / 100;
-        
+        const significativeMeasure = parseFloat(measure.toPrecision(4));
+
         if (order == 1) {
             out += "distancia: " + significativeMeasure.toString() + " " + units;
         } else {
