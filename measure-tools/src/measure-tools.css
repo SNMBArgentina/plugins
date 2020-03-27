@@ -1,24 +1,23 @@
 #toggle_measure_area {
     background: url("images/area.png") no-repeat;
-    height: 30px;
-    right: 10px;
-    position: absolute;
-    bottom: 200px;
-    width: 30px;
-    z-index: 1000;
-    border-radius: 4px;
+    right: 15px;
+    bottom: 205px;
 }
 
 #toggle_measure_longitude {
     background: url("images/ruler.png") no-repeat;
-    height: 30px;
-    right: 10px;
+    right: 15px;
+    bottom: 165px;
+}
+
+.measure_button {
+    height: 25px;
     position: absolute;
-    bottom: 160px;
-    width: 30px;
+    width: 25px;
     z-index: 1000;
     border-radius: 4px;
 }
+
 .ol-tooltip {
     position: absolute;
     background: rgba(0, 0, 0, 0.5);

@@ -2,23 +2,25 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
     ui.create('button', {
         id: 'toggle_measure_area',
         parent: layout.map.attr('id'),
+        css: 'measure_button',
         clickEventName: 'toogle-measure-area'
     });
     ui.create('button', {
         id: 'toggle_measure_longitude',
         parent: layout.map.attr('id'),
+        css: 'measure_button',
         clickEventName: 'toogle-measure-longitude'
     });
-    
+
     // Create the tooltip
     const tooltip = ui.create('div', {
         id: 'measure-tooltip',
         parent: layout.map.attr('id'),
         css: 'ol-tooltip'
     });
-    
-    let controlActivated = undefined 
-    
+
+    let controlActivated = undefined
+
     const sketchSymbolizers = {
         "Point": {
             pointRadius: 4,
@@ -43,28 +45,28 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
             fillOpacity: 0.3
         }
     };
-    
+
     const style = new OpenLayers.Style();
     style.addRules([
         new OpenLayers.Rule({symbolizer: sketchSymbolizers})
     ]);
     const styleMap = new OpenLayers.StyleMap({"default": style});
-    
+
     function createText(event) {
         let units = event.units;
         let order = event.order;
         let measure = event.measure;
         let out = "";
-        
+
         if (order == 1) {
             out += "distancia: " + measure.toFixed(3) + " " + units;
         } else {
             out += "area: " + measure.toFixed(3) + " " + units + "2";
         }
-        
+
         let text = document.createTextNode(out)
         text.id = 'measure-text'
-        
+
         return text
     }
 
@@ -80,7 +82,7 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
         $tooltip.empty()
         $tooltip.hide()
     }
-    
+
     function handleMeasure(event) {
         const text = createText(event);
         const $tooltip = $(tooltip)
@@ -101,15 +103,15 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
                 }
             }
         })
-        
+
         control.events.on({
             "measure" : handleMeasure,
             "measurepartial": removeTooltip
         });
-        
+
         return control;
-    });    
-    
+    });
+
     controlRegistry.registerControl('measureControlLongitude', function(message) {
         let control = new OpenLayers.Control.Measure(OpenLayers.Handler.Path, {
             persist : true,
@@ -119,12 +121,12 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
                 }
             }
         })
-        
+
         control.events.on({
             "measure" : handleMeasure,
             "measurepartial": removeTooltip
         });
-        
+
         return control;
     });
 
@@ -132,19 +134,19 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
         'polygon': 'measureControlArea',
         'line': 'measureControlLongitude'
     }
-    
+
     bus.listen('modules-loaded', function(e, message) {
         bus.send('map:createControl', {
             'controlId': CONTROLS.line,
             'controlType': CONTROLS.line
         });
-        
+
         bus.send('map:createControl', {
             'controlId': CONTROLS.polygon,
             'controlType': CONTROLS.polygon
         });
     });
-    
+
     function toogleActivation(controlType, controlId) {
         if (controlActivated && controlActivated === controlId) {
             bus.send('map:deactivateControl', {
@@ -168,11 +170,11 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
             controlActivated = CONTROLS[controlType]
         }
     }
-    
+
     bus.listen('toogle-measure-longitude', e => {
         toogleActivation('line', 'measureControlLongitude');
     });
-    
+
     bus.listen('toogle-measure-area', (e) => {
         toogleActivation('polygon', 'measureControlArea');
     });
