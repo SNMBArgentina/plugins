@@ -90,10 +90,9 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 	}
 
 	function createDialog(title, applyCallback) {
-		if (document.getElementById(DIALOG_ID)) {
-			bus.send('ui-show', DIALOG_ID);
-			form.empty();
-			return;
+		var oldDialog = document.getElementById(DIALOG_ID);
+		if (oldDialog) {
+			oldDialog.parentNode.removeChild(oldDialog);
 		}
 
 		ui.create('dialog', {
