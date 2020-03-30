@@ -357,6 +357,18 @@
         }
       ]
     },
+    "subGroup": {
+      "properties": {
+        "id": {
+          "title": "Identificador",
+          "type": "string"
+        },
+        "label": {
+          "title": "Etiqueta",
+          "type" : "string"
+        }
+      }
+    },
     "group":{
       "allOf":[
         {
@@ -373,7 +385,7 @@
                     "type":"string"
                   },
                   {
-                    "$ref":"#/definitions/group"
+                    "$ref":"#/definitions/subGroup"
                   }
                 ]
               },
