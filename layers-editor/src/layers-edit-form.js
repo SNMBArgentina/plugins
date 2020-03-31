@@ -90,10 +90,10 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 	}
 
 	function createDialog(title, applyCallback) {
-		var oldDialog = document.getElementById(DIALOG_ID);
+/* 		var oldDialog = document.getElementById(DIALOG_ID);
 		if (oldDialog) {
 			oldDialog.parentNode.removeChild(oldDialog);
-		}
+		} */
 
 		ui.create('dialog', {
 			id: DIALOG_ID,
@@ -132,6 +132,15 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 			}
 		});
 	}
+
+	bus.listen('ui-hide', function(e, id) {
+		if (id === DIALOG_ID) {
+			let oldDialog = document.getElementById(DIALOG_ID);
+			if (oldDialog) {
+				oldDialog.parentNode.removeChild(oldDialog);
+			}
+		}
+	});
 
 	function addTocFields(values) {
 		addFields(i18n['layers-editor.panel_layer_description'], 'toc', values);
