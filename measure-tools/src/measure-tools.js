@@ -1,4 +1,4 @@
-define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, layout, ui, controlRegistry) {
+define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry', 'i18n'], function(bus, layout, ui, controlRegistry, i18n) {
     ui.create('button', {
         id: 'toggle_measure_area',
         parent: layout.map.attr('id'),
@@ -53,17 +53,23 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry'], function(bus, 
     const styleMap = new OpenLayers.StyleMap({"default": style});
 
     function createText(event) {
+
+        const convertToHectares = {
+            'm': 10000,
+            'km': 100
+        }
         let units = event.units;
         let order = event.order;
-        let measure = event.measure;
+        
         let out = "";
 
-        const significativeMeasure = parseFloat(measure.toPrecision(4));
-
         if (order == 1) {
-            out += "distancia: " + significativeMeasure.toString() + " " + units;
+            const significativeMeasure = parseFloat(event.measure.toPrecision(4)) ;
+            out += i18n['distance'] + ": " + significativeMeasure.toString() + " " + units;
         } else {
-            out += "area: " + significativeMeasure.toString() + " " + units + "2";
+            let measure = (convertToHectares[event.units]) ? event.measure / convertToHectares[event.units] : event.measure; // hectares
+            const significativeMeasure = parseFloat(measure.toPrecision(4)) ;
+            out += i18n['area'] + ": " + significativeMeasure.toString() + " " + i18n['hectares'];
         }
 
         let text = document.createTextNode(out)
