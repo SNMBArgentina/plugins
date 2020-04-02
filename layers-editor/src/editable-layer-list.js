@@ -1,4 +1,4 @@
-define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui' ], function(bus, forms, layerRoot, $, ui) {
+define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui', 'i18n' ], function(bus, forms, layerRoot, $, ui, i18n) {
 	bus.listen('before-adding-layers', function() {
 		bus.send('register-layer-action', function(layer) {
 			return link(layer.id, forms.editLayer);
@@ -9,6 +9,7 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui' 
 		bus.send('register-group-action', function(group) {
 			let action = ui.create('button', {
 				css: 'editable-layer-list-button layer_newLayer_button',
+				tooltip: i18n['tooltip.new_Layer'],
 				clickEventCallback: function() {
 					forms.newLayer(group.id);
 				}
@@ -18,6 +19,7 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui' 
 		bus.send('register-group-action', function(group) {
 			let action = ui.create('button', {
 				css: 'editable-layer-list-button layer_newSubgroup_button',
+				tooltip: i18n['tooltip.new_subGroup'],
 				clickEventCallback: function() {
 					forms.newSubgroup(group.id);
 				}
@@ -27,6 +29,7 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui' 
 		bus.send('register-layer-action', function(layer) {
 			let action = ui.create('button', {
 				css: 'editable-layer-list-button layer_deleteLayer_button',
+				tooltip: i18n['tooltip.removePortalLayer'],
 				clickEventCallback: function() {
 					layerRoot.removePortalLayer(layer.id);
 				}
@@ -36,6 +39,7 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui' 
 		bus.send('register-group-action', function(group) {
 			let action = ui.create('button', {
 				css: 'editable-layer-list-button layer_deleteGroup_button',
+				tooltip: i18n['tooltip.removeGroup'],
 				clickEventCallback: function() {
 					layerRoot.removeGroup(group.id);
 				}
@@ -47,6 +51,7 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui' 
 	function link(id, callback) {
 		let action = ui.create('button', {
 			css: 'editable-layer-list-button layer_edit_button',
+			tooltip: i18n['tooltip.edit'],
 			clickEventCallback: function() {
 				callback.call(null, id);
 			}
@@ -55,7 +60,7 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui' 
 	}
 
 	bus.listen('layers-loaded', function() {
-		var button = document.getElementById('newGroupButton');
+		let button = document.getElementById('newGroupButton');
 		if (button && button.parentNode) {
 			button.parentNode.removeChild(button);
 		}
@@ -82,10 +87,10 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui' 
 
 		function getParent(item) {
 			let ancestor = item.parentNode;
-			while (ancestor.id != 'all_layers' && !ancestor.classList.contains('layer-list-accordion-container')) {
+			while (ancestor.id !== 'all_layers' && !ancestor.classList.contains('layer-list-accordion-container')) {
 				ancestor = ancestor.parentNode;
 			}
-			return (ancestor.id == 'all_layers') ? null : getGroupId(ancestor.id);
+			return (ancestor.id === 'all_layers') ? null : getGroupId(ancestor.id);
 		}
 
 		let groupContainer = document.getElementById('all_layers');
@@ -102,7 +107,7 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui' 
 			ui.sortable(container);
 			container.addEventListener('change', function(e) {
 				if (e.hasOwnProperty('detail')) {
-					var item = e.detail.item;
+					let item = e.detail.item;
 					layerRoot.moveLayer(getLayerId(item.id), getParent(item), e.detail.newIndex);
 				}
 			});

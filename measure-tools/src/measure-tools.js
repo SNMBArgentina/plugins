@@ -3,12 +3,14 @@ define(['message-bus', 'layout', 'ui/ui', 'ol2/controlRegistry', 'i18n'], functi
         id: 'toggle_measure_area',
         parent: layout.map.attr('id'),
         css: 'measure_button',
+        tooltip: i18n['tooltip.measure_area'],
         clickEventName: 'toogle-measure-area'
     });
     ui.create('button', {
         id: 'toggle_measure_longitude',
         parent: layout.map.attr('id'),
         css: 'measure_button',
+        tooltip:i18n['tooltip.measure-longitude'],
         clickEventName: 'toogle-measure-longitude'
     });
 
