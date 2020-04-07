@@ -49,7 +49,7 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 						return false;
 					};
 					for (let j = 0; j < testPortalLayer.layers.length; j++) {
-						let wmsLayerId = testPortalLayer.layers[j];
+						var wmsLayerId = testPortalLayer.layers[j];
 						process(layerRoot.wmsLayers, wmsLayerRemovalFunction);
 					}
 				}

@@ -79,7 +79,7 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 	}
 
 	function newSubgroup(groupId) {
-		createDialog(i18n['layers-editor.new_group_title'], function() {
+		createDialog(i18n['layers-editor.new_subGroup_title'], function() {
 			addNewSubgroup(groupId);
 		});
 

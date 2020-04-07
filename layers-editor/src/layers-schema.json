@@ -360,12 +360,25 @@
     "subGroup": {
       "properties": {
         "id": {
-          "title": "Identificador",
+          "title": "Identifier",
           "type": "string"
         },
         "label": {
-          "title": "Etiqueta",
+          "title": "Label",
           "type" : "string"
+        },
+        "infoFile":{
+          "title":"Info File",
+          "type":"string"
+        },
+        "infoLink":{
+          "title":"Info Link",
+          "type":"string",
+          "format":"uri"
+        },
+        "sameLegend":{
+          "title":"Same legend",
+          "type":"boolean"
         }
       }
     },
