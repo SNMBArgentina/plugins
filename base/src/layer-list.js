@@ -37,7 +37,7 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 	bus.listen('register-group-action', function(event, action) {
 		groupActions.push(action);
 	});
-	bus.listen('register-subGroup-action', function(event, action) {
+	bus.listen('register-subgroup-action', function(event, action) {
 		subGroupActions.push(action);
 	});
 

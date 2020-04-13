@@ -6,19 +6,19 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui' 
 		bus.send('register-group-action', function(group) {
 			return linkEdit(group.id, forms.editGroup);
 		});
-		bus.send('register-subGroup-action', function(group) {
-			return linkEdit(group.id, forms.editGroup);
+		bus.send('register-subgroup-action', function(group) {
+			return linkEdit(group.id, forms.editSubgroup);
 		});
 		bus.send('register-group-action', function(group) {
 			return linkNewLayer(group.id);
 		});
-		bus.send('register-subGroup-action', function(group) {
+		bus.send('register-subgroup-action', function(group) {
 			return linkNewLayer(group.id);
 		});
 		bus.send('register-group-action', function(group) {
 			return linkRemoveGroup(group.id);
 		});
-		bus.send('register-subGroup-action', function(group) {
+		bus.send('register-subgroup-action', function(group) {
 			return linkRemoveGroup(group.id);
 		});
 		bus.send('register-group-action', function(group) {
