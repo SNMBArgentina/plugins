@@ -1,4 +1,4 @@
-define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/ui' ], function($, bus, layerListSelector, i18n, moment, ui) {
+define([ 'jquery', 'message-bus', 'layer-list-selector', 'layout', 'i18n', 'moment', 'ui/ui' ], function($, bus, layerListSelector, layout, i18n, moment, ui) {
 	// variables global
 	var layerActions = [];
 	var groupActions = [];
