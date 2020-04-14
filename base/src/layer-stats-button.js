@@ -9,9 +9,10 @@ define([ 'message-bus', 'i18n', 'customization', 'ui/ui' ], function(bus, i18n, 
 	}
 
 	var buildLink = function(id) {
-		var link = ui.create('button', {
+		let link = ui.create('button', {
 			id: 'layer_stats_button_' + id,
 			css: 'layer_stats_button layer_action_button',
+			tooltip: i18n['tooltip.stats_button'],
 			clickEventCallback: function() {
 				bus.send('show-layer-stats');
 			}
@@ -20,7 +21,7 @@ define([ 'message-bus', 'i18n', 'customization', 'ui/ui' ], function(bus, i18n, 
 	};
 
 	bus.listen('before-adding-layers', function() {
-		var showStatsLayerAction = function(portalLayer) {
+		let showStatsLayerAction = function(portalLayer) {
 			if (getStatsLink(portalLayer)) {
 				return buildLink(portalLayer.id);
 			}

@@ -13,6 +13,14 @@
   display: block;
 }
 
+#toggle_layers_button{
+  position: absolute;
+  left: 10px;
+  top: 0px;
+  z-index: 750; /*to be on top of layer list and map */
+  background-color: #555555;
+}
+
 #all_layers {
   position: relative;
   top: 0;
@@ -110,7 +118,7 @@ td.layer_visibility {
   cursor: pointer;
 }
 
-.ui-input-container, .ui-text-area-field-container {
+.layer-list-accordion > .ui-input-container {
 	display: block;
 }
 

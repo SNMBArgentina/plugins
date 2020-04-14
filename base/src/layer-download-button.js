@@ -1,4 +1,4 @@
-define([ 'message-bus', 'ui/ui' ], function(bus, ui) {
+define([ 'message-bus', 'ui/ui', 'i18n' ], function(bus, ui, i18n) {
 	var idDownloadInfo = {};
 
 	function getDownloadLink(obj) {
@@ -9,11 +9,12 @@ define([ 'message-bus', 'ui/ui' ], function(bus, ui) {
 	}
 
 	var buildLink = function(id, eventName) {
-		var link = ui.create('button', {
+		let link = ui.create('button', {
 			id: 'layer_download_button_' + id,
 			css: 'layer_download_button layer_action_button',
+			tooltip: i18n['tooltip.download_button'],
 			clickEventCallback: function() {
-				bus.send(eventName, [ id ]);
+				bus.send(eventName, [id]);
 			}
 		});
 		return $(link);
@@ -24,8 +25,8 @@ define([ 'message-bus', 'ui/ui' ], function(bus, ui) {
 	});
 
 	bus.listen('before-adding-layers', function() {
-		var showDownloadLayerAction = function(portalLayer) {
-			if (getDownloadLink(portalLayer) != null) {
+		let showDownloadLayerAction = function(portalLayer) {
+			if (getDownloadLink(portalLayer) !== null) {
 				return buildLink(portalLayer.id, 'show-layer-download');
 			}
 			return null;
@@ -35,7 +36,7 @@ define([ 'message-bus', 'ui/ui' ], function(bus, ui) {
 	});
 
 	bus.listen('add-layer', function(event, layerInfo) {
-		if (getDownloadLink(layerInfo) != null) {
+		if (getDownloadLink(layerInfo) !== null) {
 			idDownloadInfo['layer-' + layerInfo.id] = {
 				'link': getDownloadLink(layerInfo),
 				'title': layerInfo.label
@@ -45,7 +46,7 @@ define([ 'message-bus', 'ui/ui' ], function(bus, ui) {
 
 	var showDownload = function(id) {
 		if (idDownloadInfo.hasOwnProperty(id)) {
-			var linkInfo = idDownloadInfo[id];
+			let linkInfo = idDownloadInfo[id];
 			bus.send('show-download', [ linkInfo.title, linkInfo.link ]);
 		}
 	};

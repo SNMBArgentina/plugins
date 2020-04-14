@@ -16,6 +16,27 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 		css: 'layers-accordion'
 	});
 
+	var toggleButton = ui.create('button', {
+		id: 'toggle_layers_button',
+		parent: layout.map.attr('id'),
+		css: 'blue_button',
+		html: "<<",
+		clickEventName: 'toggle-layers'
+	});
+
+	//Event change legend dialog
+	bus.listen('toggle-layers', function() {
+		bus.send('ui-toggle', 'layers_container');
+		bus.send('ui-toggle', 'layer_list_selector_pane');
+		toggleIcon();
+	});
+
+	var toggleIcon = function() {
+		var buttonDiv = toggleButton.firstElementChild;
+		if(buttonDiv.innerHTML == "&gt;&gt;") buttonDiv.innerHTML = "&lt;&lt;";
+		else buttonDiv.innerHTML = "&gt;&gt;";
+	}
+
 	layerListSelector.registerLayerPanel('all_layers_selector', 10, i18n.layers, all_layers);
 
 	// ///Event//////

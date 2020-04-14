@@ -1,4 +1,4 @@
-define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization, ui) {
+define(['message-bus', 'customization', 'ui/ui', 'i18n'], function(bus, customization, ui, i18n) {
 	var idLinkInfo = {};
 
 	function getInfoLink(obj) {
@@ -11,11 +11,12 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
 	}
 
 	var buildLink = function(id, eventName) {
-		var link = ui.create('button', {
+		let link = ui.create('button', {
 			id: 'layer_info_button_' + id,
 			css: 'layer_info_button layer_action_button',
+			tooltip: i18n['tooltip.info_button'],
 			clickEventCallback: function() {
-				bus.send(eventName, [ id ]);
+				bus.send(eventName, [id]);
 			}
 		});
 		return $(link);
@@ -26,13 +27,13 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
 	});
 
 	bus.listen('before-adding-layers', function() {
-		var showInfoLayerAction = function(portalLayer) {
+		let showInfoLayerAction = function(portalLayer) {
 			if (getInfoLink(portalLayer) !== null) {
 				return buildLink(portalLayer.id, 'show-layer-info');
 			}
 			return null;
 		};
-		var showInfoGroupAction = function(group) {
+		let showInfoGroupAction = function(group) {
 			if (getInfoLink(group) !== null) {
 				return buildLink(group.id, 'show-group-info');
 			}
@@ -64,8 +65,8 @@ define([ 'message-bus', 'customization', 'ui/ui' ], function(bus, customization,
 
 	var showInfo = function(id) {
 		if (idLinkInfo.hasOwnProperty(id)) {
-			var linkInfo = idLinkInfo[id];
-			bus.send('show-info', [ linkInfo.title, linkInfo.link ]);
+			const linkInfo = idLinkInfo[id];
+			bus.send('show-info', [linkInfo.title, linkInfo.link]);
 		}
 	};
 
