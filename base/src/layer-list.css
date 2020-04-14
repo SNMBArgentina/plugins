@@ -13,14 +13,6 @@
   display: block;
 }
 
-#toggle_layers_button{
-  position: absolute;
-  left: 10px;
-  top: 0px;
-  z-index: 750; /*to be on top of layer list and map */
-  background-color: #555555;
-}
-
 #all_layers {
   position: relative;
   top: 0;
@@ -85,30 +77,6 @@ td.layer_visibility {
 
 .layer_info_button {
   background: url("images/ui-elements.png") no-repeat scroll 0 -132px rgba(0, 0, 0, 0);
-}
-
-.layer_download_button {
-  background: url("images/download.png") no-repeat scroll 0 -1px;
-}
-
-.layer_temp_button {
-    background: url("images/clock.png") no-repeat;
-    width: 16px !important;
-    margin-right: 4px;
-}
-
-.layer_stats_button {
-  background: url(images/ui-elements.png) no-repeat scroll 0 -148px rgba(0, 0, 0, 0);
-  margin-right: 4px;
-}
-
-.layer_metadata_button {
-  background: url("images/metadata.png") no-repeat;
-  width: 18px !important;
-  margin: 0px 2px;
-}
-
-.layer_action_button {
   display: inline-block;
   float: right;
   height: 16px;
@@ -118,12 +86,8 @@ td.layer_visibility {
   cursor: pointer;
 }
 
-.layer-list-accordion > .ui-input-container {
-	display: block;
-}
-
 .ui-input-container>.layer_info_button {
-  display: block;
+  width: 20px;
 }
 
 .layer-list-layer-container {
@@ -176,8 +140,8 @@ td.layer_visibility {
 .layer-list-accordion-header {
   color: white;
   padding: 10px;
+  margin-bottom: 5px;
   background: #38c;
-  margin: 5px;
 }
 
 .layer-list-accordion.accordion-content {
@@ -188,7 +152,7 @@ td.layer_visibility {
 .layer-list-accordion.accordion-content .layer-list-accordion-header {
   background: transparent;
   border: 0;
-  padding: 5px 0px;
+  padding: 0px;
 }
 
 .layer-list-accordion.accordion-content .layer-list-accordion.accordion-content {
@@ -214,5 +178,5 @@ td.layer_visibility {
 }
 
 .accordion-content .ui-input-container .editable-layer-list-button {
-  width: 18px;
+  width: 20px;
 }

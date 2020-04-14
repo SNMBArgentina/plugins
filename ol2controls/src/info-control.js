@@ -137,13 +137,16 @@ define([ 'ol2/map', 'message-bus', 'customization', 'ol2/controlRegistry', 'geoj
 					if (evt.features && evt.features.length > 0 && lastXY.x == evt.xy.x && lastXY.y == evt.xy.y) {
 						var features = evt.features;
 
-						// no need to re-project to Google projection: you'll get coords in correct map projection
+						// re-project to Google projection
+						epsg4326 = new OpenLayers.Projection('EPSG:4326');
+						epsg900913 = new OpenLayers.Projection('EPSG:900913');
 						var geojsonFeatures = [];
 						$.each(evt.features, function(index, feature) {
 							if (feature.geometry) {
 								if (queryInfo.queryHighlightBounds) {
 									feature.geometry = feature.geometry.getBounds().toGeometry();
 								}
+								feature.geometry.transform(epsg4326, epsg900913);
 							}
 							var geojsonFeature = JSON.parse(new OpenLayers.Format.GeoJSON().write(feature));
 							addBBoxAndHighlightGeom(geojsonFeature);

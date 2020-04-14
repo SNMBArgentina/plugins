@@ -9,12 +9,8 @@ define([ 'jquery', 'message-bus', 'layout', 'layer-list-selector', 'moment', 'ui
 	});
 	layerListSelector.registerLayerPanel('layer_slider_selector', 30, 'Temporal', container);
 
-	function setLabel(id, date, dateFormat, firstTimestamp) {
-		var firstYear = moment(firstTimestamp).format(dateFormat || 'YYYY');
-		var lastYear = moment(date).format(dateFormat || 'YYYY');
-		var label = labels[id] + ' (' + firstYear + '-' + lastYear + ')';
-		//if first date, we don't want to write "Parque Chaqueño (2003-2003)" but "Parque Chaqueño (2003)"
-		if(firstYear == lastYear) label = labels[id] + ' (' + lastYear + ')';
+	function setLabel(id, date, dateFormat) {
+		var label = labels[id] + ' (' + moment(date).format(dateFormat || 'YYYY') + ')';
 		bus.send('ui-input:layer_time_slider_' + id + ':set-label', label);
 	}
 
@@ -56,10 +52,10 @@ define([ 'jquery', 'message-bus', 'layout', 'layer-list-selector', 'moment', 'ui
 		});
 
 		slider.addEventListener('slide', function(event) {
-			setLabel(layerInfo.id, new Date(event.detail.value), layerInfo['date-format'], timestamps[0]);
+			setLabel(layerInfo.id, new Date(event.detail.value), layerInfo['date-format']);
 		});
 
-		setLabel(layerInfo.id, new Date(lastTimestamp), layerInfo['date-format'], timestamps[0]);
+		setLabel(layerInfo.id, new Date(lastTimestamp), layerInfo['date-format']);
 
 		var timestampInfo = {
 			'timestamps': timestamps
@@ -76,7 +72,7 @@ define([ 'jquery', 'message-bus', 'layout', 'layer-list-selector', 'moment', 'ui
 		timestampInfo.timestamps.forEach(function(timestamp) {
 			if (timestamp == d.getTime()) {
 				bus.send('ui-slider:layer_time_slider_' + layerId + ':set-value', timestamp);
-				setLabel(layerId, d, timestampInfo['date-format'], timestampInfo.timestamps[0]);
+				setLabel(layerId, d, timestampInfo['date-format']);
 			}
 		});
 	});

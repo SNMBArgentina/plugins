@@ -72,7 +72,7 @@ define([ 'message-bus', 'i18n', './auth-user', 'module', 'ui/ui', 'toolbar' ], f
 		ui.create('button', {
 			id: buttonConf.div,
 			parent: buttonConf.parentDiv,
-			css: 'auth-login-logout-button blue_button toolbar_auth_button',
+			css: 'auth-login-logout-button toolbar_button blue_button',
 			html: i18n['auth.login'] || 'Login',
 			clickEventName: 'ui-show',
 			clickEventMessage: DIALOG_ID

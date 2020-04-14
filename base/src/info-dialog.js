@@ -5,7 +5,6 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 	var pointHighlightLayerName = null;
 
 	var dialog;
-	var allResults;
 	var divResults;
 
 	bus.listen('reset-layers', function() {
@@ -40,10 +39,10 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 	});
 
 	bus.listen('clear-info-features', function() {
-		if (allResults) {
-			let elems = allResults.getElementsByClassName('info_dialog_results');
+		if (dialog) {
+			let elems = dialog.getElementsByClassName('info_dialog_results');
 			for (let i = 0; i < elems.length; i++) {
-				allResults.removeChild(elems[i]);
+				dialog.removeChild(elems[i]);
 			}
 		}
 
@@ -91,12 +90,6 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 			closeButton: true
 		});
 
-		allResults = ui.create('div', {
-			id: 'info_dialog_allresults',
-			parent: dialog,
-			css: 'info_dialog_allresults'
-		});
-
 		bus.listen('ui-hide', function(e, id) {
 			if (id === 'info_popup') {
 				bus.send('clear-info-features');
@@ -108,7 +101,7 @@ define([ 'module', 'jquery', 'message-bus', 'i18n', 'customization', 'ui/ui', 'g
 		// standard one
 		divResults = ui.create('div', {
 			id: 'result_area_' + wmsLayerId,
-			parent: allResults,
+			parent: dialog,
 			css: 'info_dialog_results'
 		});
 

@@ -37,9 +37,9 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'ui/ui', 'layer
 				label: layerInfo.label,
 				opacity: 1
 			};
-			/*if (layerInfo.inlineLegendUrl) {
+			if (layerInfo.inlineLegendUrl) {
 				activeLayerInfo.inlineLegendUrl = layerInfo.inlineLegendUrl;
-			}*/
+			}
 			layersInfo[layerInfo.id] = activeLayerInfo;
 		}
 	});

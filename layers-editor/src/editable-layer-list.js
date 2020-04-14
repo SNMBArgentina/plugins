@@ -1,52 +1,43 @@
-define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui', 'i18n' ], function(bus, forms, layerRoot, $, ui, i18n) {
+define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui' ], function(bus, forms, layerRoot, $, ui) {
 	bus.listen('before-adding-layers', function() {
 		bus.send('register-layer-action', function(layer) {
-			return linkEdit(layer.id, forms.editLayer);
+			return link(layer.id, forms.editLayer);
 		});
 		bus.send('register-group-action', function(group) {
-			return linkEdit(group.id, forms.editGroup);
-		});
-		bus.send('register-subgroup-action', function(group) {
-			return linkEdit(group.id, forms.editSubgroup);
+			return link(group.id, forms.editGroup);
 		});
 		bus.send('register-group-action', function(group) {
-			return linkNewLayer(group.id);
-		});
-		bus.send('register-subgroup-action', function(group) {
-			return linkNewLayer(group.id);
-		});
-		bus.send('register-group-action', function(group) {
-			return linkRemoveGroup(group.id);
-		});
-		bus.send('register-subgroup-action', function(group) {
-			return linkRemoveGroup(group.id);
-		});
-		bus.send('register-group-action', function(group) {
-			let action = ui.create('button', {
-				css: 'editable-layer-list-button layer_newSubgroup_button',
-				tooltip: i18n['tooltip.new_subGroup'],
+			var action = ui.create('button', {
+				css: 'editable-layer-list-button layer_newLayer_button',
 				clickEventCallback: function() {
-					forms.newSubgroup(group.id);
+					forms.newLayer(group.id);
 				}
 			});
 			return $(action);
 		});
 		bus.send('register-layer-action', function(layer) {
-			let action = ui.create('button', {
+			var action = ui.create('button', {
 				css: 'editable-layer-list-button layer_deleteLayer_button',
-				tooltip: i18n['tooltip.removePortalLayer'],
 				clickEventCallback: function() {
 					layerRoot.removePortalLayer(layer.id);
 				}
 			});
 			return $(action);
 		});
+		bus.send('register-group-action', function(group) {
+			var action = ui.create('button', {
+				css: 'editable-layer-list-button layer_deleteGroup_button',
+				clickEventCallback: function() {
+					layerRoot.removeGroup(group.id);
+				}
+			});
+			return $(action);
+		});
 	});
 
-	function linkEdit(id, callback) {
-		let action = ui.create('button', {
+	function link(id, callback) {
+		var action = ui.create('button', {
 			css: 'editable-layer-list-button layer_edit_button',
-			tooltip: i18n['tooltip.edit'],
 			clickEventCallback: function() {
 				callback.call(null, id);
 			}
@@ -54,28 +45,8 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui',
 		return $(action);
 	}
 
-	function linkNewLayer(id) {
-		let action = ui.create('button', {
-			css: 'editable-layer-list-button layer_newLayer_button',
-			clickEventCallback: function() {
-				forms.newLayer(id);
-			}
-		});
-		return $(action);
-	}
-
-	function linkRemoveGroup(id) {
-		let action = ui.create('button', {
-			css: 'editable-layer-list-button layer_deleteGroup_button',
-			clickEventCallback: function() {
-				layerRoot.removeGroup(id);
-			}
-		});
-		return $(action);
-	}
-
 	bus.listen('layers-loaded', function() {
-		let button = document.getElementById('newGroupButton');
+		var button = document.getElementById('newGroupButton');
 		if (button && button.parentNode) {
 			button.parentNode.removeChild(button);
 		}
@@ -91,7 +62,7 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui',
 		});
 
 		function getGroupId(domId) {
-			let id = domId.replace('all_layers_group_', '');
+			var id = domId.replace('all_layers_group_', '');
 			id = id.replace('-container', '');
 			return id;
 		}
@@ -101,30 +72,26 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui',
 		}
 
 		function getParent(item) {
-			let ancestor = item.parentNode;
-			while (ancestor.id !== 'all_layers' && !ancestor.classList.contains('layer-list-accordion-container')) {
+			var ancestor = item.parentNode;
+			while (ancestor.id != 'all_layers' && !ancestor.classList.contains('layer-list-accordion-container')) {
 				ancestor = ancestor.parentNode;
 			}
-			return (ancestor.id === 'all_layers') ? null : getGroupId(ancestor.id);
+			return (ancestor.id == 'all_layers') ? null : getGroupId(ancestor.id);
 		}
 
-		let groupContainer = document.getElementById('all_layers');
+		var groupContainer = document.getElementById('all_layers');
 		ui.sortable(groupContainer);
 		groupContainer.addEventListener('change', function(e) {
-			if (e.hasOwnProperty('detail')) {
-				let item = e.detail.item;
-				layerRoot.moveGroup(getGroupId(item.id), getParent(item), e.detail.newIndex);
-			}
+			var item = e.detail.item;
+			layerRoot.moveGroup(getGroupId(item.id), getParent(item), e.detail.newIndex);
 		});
 
-		let containers = document.getElementsByClassName('layer-list-accordion accordion-content');
+		var containers = document.getElementsByClassName('layer-list-accordion accordion-content');
 		Array.prototype.forEach.call(containers, function(container) {
 			ui.sortable(container);
 			container.addEventListener('change', function(e) {
-				if (e.hasOwnProperty('detail')) {
-					let item = e.detail.item;
-					layerRoot.moveLayer(getLayerId(item.id), getParent(item), e.detail.newIndex);
-				}
+				var item = e.detail.item;
+				layerRoot.moveLayer(getLayerId(item.id), getParent(item), e.detail.newIndex);
 			});
 		});
 	});

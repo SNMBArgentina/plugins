@@ -24,10 +24,6 @@
   background: url("images/delete-layer.png") no-repeat;
 }
 
-.layer_newSubgroup_button {
-  background: url("images/add.png") no-repeat;
-}
-
 .root_group_placeholder {
   border: 2px dashed white;
   border-radius: 6px;

@@ -35,10 +35,6 @@
     margin-right: 5px;
 }
 
-.info_dialog_allresults {
-	overflow-x: auto;
-}
-
 .info_dialog_results table {
     color: black;
 }

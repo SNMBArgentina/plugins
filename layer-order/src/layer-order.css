@@ -3,11 +3,6 @@
 	margin-left: 20px;
 }
 
-.layer-order-pane-content {
-    overflow: scroll;
-    height: 500px;
-}
-
 .layer-order-item {
 	padding: 7px;
     border: 1px dotted;

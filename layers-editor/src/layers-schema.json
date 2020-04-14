@@ -272,10 +272,6 @@
           "title":"Info Link",
           "type":"string",
           "format":"uri"
-        },
-        "sameLegend":{
-          "title":"Same legend",
-          "type":"boolean"
         }
       },
       "required":[
@@ -328,21 +324,8 @@
               "title":"Date format",
               "type":"string"
             },
-            "metadataLink":{
-              "title":"Metadata Link",
-              "type":"string",
-              "format":"uri"
-            },
             "feedback":{
               "title":"Allow user feedback",
-              "type":"boolean"
-            },
-            "downloadFile":{
-              "title":"Enable download Layer",
-              "type":"boolean"
-            },
-            "stats":{
-              "title":"Layer has stats",
               "type":"boolean"
             }
           },
@@ -356,31 +339,6 @@
           ]
         }
       ]
-    },
-    "subGroup": {
-      "properties": {
-        "id": {
-          "title": "Identifier",
-          "type": "string"
-        },
-        "label": {
-          "title": "Label",
-          "type" : "string"
-        },
-        "infoFile":{
-          "title":"Info File",
-          "type":"string"
-        },
-        "infoLink":{
-          "title":"Info Link",
-          "type":"string",
-          "format":"uri"
-        },
-        "sameLegend":{
-          "title":"Same legend",
-          "type":"boolean"
-        }
-      }
     },
     "group":{
       "allOf":[
@@ -398,7 +356,7 @@
                     "type":"string"
                   },
                   {
-                    "$ref":"#/definitions/subGroup"
+                    "$ref":"#/definitions/group"
                   }
                 ]
               },
