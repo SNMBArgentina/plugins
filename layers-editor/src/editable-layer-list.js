@@ -1,20 +1,25 @@
 define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui', 'i18n' ], function(bus, forms, layerRoot, $, ui, i18n) {
 	bus.listen('before-adding-layers', function() {
 		bus.send('register-layer-action', function(layer) {
-			return link(layer.id, forms.editLayer);
+			return linkEdit(layer.id, forms.editLayer);
 		});
 		bus.send('register-group-action', function(group) {
-			return link(group.id, forms.editGroup);
+			return linkEdit(group.id, forms.editGroup);
+		});
+		bus.send('register-subgroup-action', function(group) {
+			return linkEdit(group.id, forms.editSubgroup);
 		});
 		bus.send('register-group-action', function(group) {
-			let action = ui.create('button', {
-				css: 'editable-layer-list-button layer_newLayer_button',
-				tooltip: i18n['tooltip.new_Layer'],
-				clickEventCallback: function() {
-					forms.newLayer(group.id);
-				}
-			});
-			return $(action);
+			return linkNewLayer(group.id);
+		});
+		bus.send('register-subgroup-action', function(group) {
+			return linkNewLayer(group.id);
+		});
+		bus.send('register-group-action', function(group) {
+			return linkRemoveGroup(group.id);
+		});
+		bus.send('register-subgroup-action', function(group) {
+			return linkRemoveGroup(group.id);
 		});
 		bus.send('register-group-action', function(group) {
 			let action = ui.create('button', {
@@ -36,24 +41,34 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui',
 			});
 			return $(action);
 		});
-		bus.send('register-group-action', function(group) {
-			let action = ui.create('button', {
-				css: 'editable-layer-list-button layer_deleteGroup_button',
-				tooltip: i18n['tooltip.removeGroup'],
-				clickEventCallback: function() {
-					layerRoot.removeGroup(group.id);
-				}
-			});
-			return $(action);
-		});
 	});
 
-	function link(id, callback) {
+	function linkEdit(id, callback) {
 		let action = ui.create('button', {
 			css: 'editable-layer-list-button layer_edit_button',
 			tooltip: i18n['tooltip.edit'],
 			clickEventCallback: function() {
 				callback.call(null, id);
+			}
+		});
+		return $(action);
+	}
+
+	function linkNewLayer(id) {
+		let action = ui.create('button', {
+			css: 'editable-layer-list-button layer_newLayer_button',
+			clickEventCallback: function() {
+				forms.newLayer(id);
+			}
+		});
+		return $(action);
+	}
+
+	function linkRemoveGroup(id) {
+		let action = ui.create('button', {
+			css: 'editable-layer-list-button layer_deleteGroup_button',
+			clickEventCallback: function() {
+				layerRoot.removeGroup(id);
 			}
 		});
 		return $(action);

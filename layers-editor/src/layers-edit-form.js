@@ -51,6 +51,13 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 		addTocFields(layerRoot.getGroup(id));
 	}
 
+	function editSubgroup(id) {
+		createDialog(i18n['layers-editor.edit_subgroup_title'], function() {
+			saveGroup();
+		});
+		addTocFields(layerRoot.getGroup(id));
+	}
+
 	function newLayer(groupId) {
 		createDialog(i18n['layers-editor.new_layer_title'], function() {
 			addNewLayer(groupId);
@@ -524,6 +531,7 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 	return {
 		editLayer: editLayer,
 		editGroup: editGroup,
+		editSubgroup: editSubgroup,
 		newLayer: newLayer,
 		newGroup: newGroup,
 		newSubgroup: newSubgroup

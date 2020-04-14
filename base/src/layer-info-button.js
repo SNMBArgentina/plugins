@@ -41,7 +41,8 @@ define(['message-bus', 'customization', 'ui/ui', 'i18n'], function(bus, customiz
 		};
 
 		bus.send('register-layer-action', showInfoLayerAction);
-		bus.send('register-group-action', showInfoGroupAction);
+		bus.send('register-group-action',  showInfoGroupAction);
+		bus.send('register-subgroup-action', showInfoGroupAction);
 	});
 
 	bus.listen('add-layer', function(event, layerInfo) {
