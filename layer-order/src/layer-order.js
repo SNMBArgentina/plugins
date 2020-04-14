@@ -5,9 +5,13 @@
 'use strict';
 
 define([ 'layout', 'module', 'toolbar', 'i18n', 'jquery', 'message-bus', 'ui/ui' ], function(layout, module, toolbar, i18n, $, bus, ui) {
+	var layerRoot;
 	var dialogId = 'layer-order-pane';
-
 	var layers = [];
+
+	bus.listen('layers-loaded', function(e, newLayersRoot) {
+		layerRoot = JSON.parse(JSON.stringify(newLayersRoot));
+	});
 
 	// Create ui components
 	ui.create('button', {
@@ -23,25 +27,29 @@ define([ 'layout', 'module', 'toolbar', 'i18n', 'jquery', 'message-bus', 'ui/ui'
 		id: dialogId,
 		parent: layout.map.attr('id'),
 		title: i18n.layer_order,
+		css: 'layer-order-pane',
 		closeButton: true
 	});
 	var content = ui.create('div', {
 		id: dialogId + '-content',
+		css: 'layer-order-pane-content',
 		parent: dialogId
 	});
 
 	ui.sortable(content);
-	content.addEventListener('change', function() {
-		// TODO implementar
-		// var newLayersOrder = jcontent.sortable('toArray');
-		// for (var i = 0; i < newLayersOrder.length; i++) {
-		// TODO update layers json and reload all layers
-		// var id = newLayersOrder[i];
-		// var layer = map.getLayer(id);
-		// if (layer) {
-		// map.setLayerIndex(layer, i);
-		// }
-		// }
+	content.addEventListener('change', (event) => {
+		let layerId = event.detail.item.id.replace('-order-item', '');
+		let index = event.detail.newIndex;
+		let oldIndex = event.detail.oldIndex;
+		bus.send('map:setLayerIndex', {
+			layerId,
+			index
+		});
+
+		const wmsLayerToMove = layerRoot.wmsLayers.splice(oldIndex, 1);
+		layerRoot.wmsLayers.splice(index, 0, wmsLayerToMove[0]);
+
+		bus.send('layers-set-root', layerRoot);
 	});
 
 	// Link dialog visibility and toolbar button
@@ -66,21 +74,29 @@ define([ 'layout', 'module', 'toolbar', 'i18n', 'jquery', 'message-bus', 'ui/ui'
 		content.innerHTML = '';
 	});
 
+	function getLabelLayer (layerId) {
+		const portalLayer = layerRoot.portalLayers.filter(thePortalLayer => thePortalLayer.layers.indexOf(layerId) !== -1);
+		if (portalLayer && portalLayer.length === 1 && portalLayer[0].hasOwnProperty('label')) {
+			return portalLayer[0].label;
+		}
+		return null;
+	}
+
 	bus.listen('layers-loaded', function() {
-		for ( var n in layers) {
-			var layer = layers[n];
+		for (let n in layerRoot.wmsLayers) {
+			var layer = layerRoot.wmsLayers[n];
 			ui.create('div', {
-				id: layer.id,
+				id: `${layer.id}-order-item`,
 				parent: dialogId + '-content',
 				css: 'layer-order-item',
-				html: layer.id
+				html: getLabelLayer(layer.id)
 			});
 		}
 	});
 
 	bus.listen('add-layer', function(e, layerInfo) {
-		for (var index = 0; index < layerInfo.mapLayers.length; index++) {
-			var mapLayer = layerInfo.mapLayers[index];
+		for (var newIndex = 0; newIndex < layerInfo.mapLayers.length; newIndex++) {
+			var mapLayer = layerInfo.mapLayers[newIndex];
 			layers.push(mapLayer);
 		}
 	});

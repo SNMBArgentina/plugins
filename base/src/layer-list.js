@@ -1,11 +1,14 @@
-define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/ui' ], function($, bus, layerListSelector, i18n, moment, ui) {
+define([ 'jquery', 'message-bus', 'layer-list-selector', 'layout', 'i18n', 'moment', 'ui/ui' ], function($, bus, layerListSelector, layout, i18n, moment, ui) {
+	// variables global
 	var layerActions = [];
 	var groupActions = [];
+	var subGroupActions = [];
 	var temporalLayers = [];
 	var groupIdAccordionIndex = {};
 	var numTopLevelGroups = 0;
 	var layerGroups = {};
 	var layerLabels = {};
+	var layerDownload = {};
 
 	var allLayers = ui.create('div', {
 		id: 'all_layers',
@@ -13,11 +16,35 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 		css: 'layers-accordion'
 	});
 
+	var toggleButton = ui.create('button', {
+		id: 'toggle_layers_button',
+		parent: layout.map.attr('id'),
+		css: 'blue_button',
+		html: "<<",
+		clickEventName: 'toggle-layers'
+	});
+
+	//Event change legend dialog
+	bus.listen('toggle-layers', function() {
+		bus.send('ui-toggle', 'layers_container');
+		bus.send('ui-toggle', 'layer_list_selector_pane');
+		toggleIcon();
+	});
+
+	var toggleIcon = function() {
+		var buttonDiv = toggleButton.firstElementChild;
+		if(buttonDiv.innerHTML == "&gt;&gt;") buttonDiv.innerHTML = "&lt;&lt;";
+		else buttonDiv.innerHTML = "&gt;&gt;";
+	}
+
 	layerListSelector.registerLayerPanel('all_layers_selector', 10, i18n.layers, all_layers);
+
+	// ///Event//////
 
 	bus.listen('reset-layers', function() {
 		layerActions = [];
 		groupActions = [];
+		subGroupActions = [];
 		temporalLayers = [];
 		groupIdAccordionIndex = {};
 		numTopLevelGroups = 0;
@@ -30,6 +57,9 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 
 	bus.listen('register-group-action', function(event, action) {
 		groupActions.push(action);
+	});
+	bus.listen('register-subgroup-action', function(event, action) {
+		subGroupActions.push(action);
 	});
 
 	bus.listen('add-group', function(event, groupInfo) {
@@ -49,10 +79,19 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 			title: groupInfo.label
 		});
 
-		for (var i = 0; i < groupActions.length; i++) {
-			var elem = groupActions[i](groupInfo);
-			if (elem) {
-				accordionGroup.header.appendChild(elem[0]);
+		if (!groupInfo.parentId) {
+			for (let i = 0; i < groupActions.length; i++) {
+				let elem = groupActions[i](groupInfo);
+				if (elem && accordionGroup.header) {
+					accordionGroup.header.appendChild(elem[0]);
+				}
+			}
+		} else {
+			for (let i = 0; i < subGroupActions.length; i++) {
+				let elem = subGroupActions[i](groupInfo);
+				if (elem && accordionGroup.header) {
+					accordionGroup.header.appendChild(elem[0]);
+				}
 			}
 		}
 	});
@@ -60,6 +99,7 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 	bus.listen('add-layer', function(event, portalLayer) {
 		layerGroups[portalLayer.id] = portalLayer.groupId;
 		layerLabels[portalLayer.id] = portalLayer.label;
+		layerDownload[portalLayer.id] = portalLayer.download;
 		var parent = 'all_layers_group_' + portalLayer.groupId;
 
 		var checkbox = ui.create('checkbox', {
@@ -72,7 +112,7 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 		});
 
 		var legend;
-		if (portalLayer.inlineLegendUrl != null) {
+		if (portalLayer.inlineLegendUrl !== null) {
 			legend = ui.create('div', {
 				id: 'layer_list_legend_' + portalLayer.id,
 				css: 'inline-legend'
@@ -123,11 +163,15 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 		}
 	});
 
+
+	// ///Function////
+
 	var updateLabel = function(layerId, layerFormat, date) {
 		var dateStr = moment(date).format(layerFormat || 'YYYY');
 		var label = layerLabels[layerId] + ' (' + dateStr + ')';
 		bus.send('ui-input:' + layerId + ':set-label', label);
 	};
+
 
 	function findClosestPrevious(layer, date) {
 		var layerTimestamps = layer.timestamps;
@@ -136,14 +180,14 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 			layerTimestampStyles = layer.timeStyles.split(',');
 		}
 		var timestampInfos = [];
-		for (var j = 0; j < layerTimestamps.length; j++) {
-			var timestamp = new Date();
+		for (let j = 0; j < layerTimestamps.length; j++) {
+			let timestamp = new Date();
 			timestamp.setISO8601(layerTimestamps[j]);
 			var style = null;
-			if (layerTimestampStyles != null) {
+			if (layerTimestampStyles !== null) {
 				style = layerTimestampStyles[j];
 			}
-			var timestampInfo = {
+			let timestampInfo = {
 				'timestamp': timestamp,
 				'style': style
 			};
@@ -157,7 +201,7 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 		var closestPrevious = null;
 
 		for (var j = 0; j < timestampInfos.length; j++) {
-			var timestampInfo = timestampInfos[j];
+			let timestampInfo = timestampInfos[j];
 			if (timestampInfo.timestamp.getTime() <= date.getTime()) {
 				closestPrevious = timestampInfo;
 			} else {
@@ -165,12 +209,15 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 			}
 		}
 
-		if (closestPrevious == null) {
+		if (closestPrevious === null) {
 			closestPrevious = timestampInfos[0];
 		}
 
 		return closestPrevious;
 	}
+
+
+	// ///Event//////
 
 	bus.listen('time-slider.selection', function(event, date) {
 		for (var i = 0; i < temporalLayers.length; i++) {
@@ -184,7 +231,7 @@ define([ 'jquery', 'message-bus', 'layer-list-selector', 'i18n', 'moment', 'ui/u
 	});
 	bus.listen('layer-time-slider.selection', function(event, layerid, date) {
 		$.each(temporalLayers, function(index, temporalLayer) {
-			if (temporalLayer.id == layerid) {
+			if (temporalLayer.id === layerid) {
 				var closestPrevious = findClosestPrevious(temporalLayer, date);
 				updateLabel(layerid, temporalLayer['date-format'], closestPrevious.timestamp);
 				bus.send('layer-timestamp-selected', [ layerid, closestPrevious.timestamp, closestPrevious.style ]);

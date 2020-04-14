@@ -56,6 +56,13 @@ define([ 'message-bus', 'module', './geojson', 'openlayers' ], function(bus, mod
 		});
 	});
 
+	bus.listen('map:getpixelfromlonlat', function(event, message) {
+		var mapPoint = new OpenLayers.LonLat(message.lon, message.lat);
+		bus.send('map:pixelfromlonlat', {
+			xy: getMap().getPixelFromLonLat(mapPoint)
+		});
+	});
+
 	bus.listen('map:layerVisibility', function(event, message) {
 		if (googleLayers && googleLayers[message.layerId]) {
 			googleLayers[message.layerId].visibility = message.visibility;
@@ -176,6 +183,9 @@ define([ 'message-bus', 'module', './geojson', 'openlayers' ], function(bus, mod
 		}
 		if (layer != null) {
 			layer.id = message.layerId;
+			//we set layer visibility later (with layer-visibility event), so we need to set it to false
+			//otherwise layer-visibility event can arrive too late and ol2 makes unnecessary tile requests
+			layer.setVisibility(false);
 			getMap().addLayer(layer);
 			bus.send('map:layerAdded', [ message ]);
 		}

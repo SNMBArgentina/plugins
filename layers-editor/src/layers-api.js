@@ -1,6 +1,6 @@
 define([ 'jquery', 'message-bus' ], function($, bus) {
 	function process(array, processFunction) {
-		for (var i = 0; i < array.length; i++) {
+		for (let i = 0; i < array.length; i++) {
 			if (processFunction(array[i], i)) {
 				break;
 			}
@@ -11,13 +11,13 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 	}
 
 	function findById(array, id) {
-		if (id == null) {
+		if (id === null) {
 			return null;
 		}
 
-		var ret = null;
+		let ret = null;
 		process(array, function(o) {
-			if (o.id == id) {
+			if (o.id === id) {
 				ret = o;
 				return true;
 			}
@@ -36,19 +36,19 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 
 	function doDeleteLayer(layerId) {
 		function portalLayerRemovalFunction(testPortalLayer, i) {
-			if (testPortalLayer.id == layerId) {
+			if (testPortalLayer.id === layerId) {
 				layerRoot.portalLayers.splice(i, 1);
 
 				if (testPortalLayer.layers) {
-					var wmsLayerRemovalFunction = function(testWMSLayer, k) {
-						if (testWMSLayer.id == wmsLayerId) {
+					let wmsLayerRemovalFunction = function(testWMSLayer, k) {
+						if (testWMSLayer.id === wmsLayerId) {
 							layerRoot.wmsLayers.splice(k, 1);
 							return true;
 						}
 
 						return false;
 					};
-					for (var j = 0; j < testPortalLayer.layers.length; j++) {
+					for (let j = 0; j < testPortalLayer.layers.length; j++) {
 						var wmsLayerId = testPortalLayer.layers[j];
 						process(layerRoot.wmsLayers, wmsLayerRemovalFunction);
 					}
@@ -63,8 +63,8 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 	}
 
 	function deleteAllGroupLayers(group) {
-		for (var i = 0; i < group.items.length; i++) {
-			var groupItem = group.items[i];
+		for (let i = 0; i < group.items.length; i++) {
+			let groupItem = group.items[i];
 			if (typeof groupItem === 'string' || groupItem instanceof String) {
 				doDeleteLayer(groupItem);
 			} else if (groupItem.items) {
@@ -75,8 +75,8 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 
 	function findAndDeleteGroup(array, groupId) {
 		// Directly in the array
-		for (var i = 0; i < array.length; i++) {
-			if (array[i].id == groupId) {
+		for (let i = 0; i < array.length; i++) {
+			if (array[i].id === groupId) {
 				deleteAllGroupLayers(array[i]);
 				array.splice(i, 1);
 				return true;
@@ -84,7 +84,7 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 		}
 
 		// Delegate on each group
-		for (var i = 0; i < array.length; i++) {
+		for (let i = 0; i < array.length; i++) {
 			if (array[i].hasOwnProperty('items')) {
 				if (findAndDeleteGroup(array[i].items, groupId)) {
 					return true;
@@ -107,7 +107,7 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 
 		if (portalLayer.layers) {
 			portalLayer.layers.forEach(function(mapLayerId) {
-				var mapLayer = findById(layerRoot.wmsLayers, mapLayerId);
+				let mapLayer = findById(layerRoot.wmsLayers, mapLayerId);
 				if (mapLayer !== null) {
 					decorateCommons(mapLayer);
 				}
@@ -121,7 +121,7 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 			if (typeof item === 'object') {
 				processGroup(group.id, item);
 			} else {
-				var portalLayer = findById(layerRoot.portalLayers, item);
+				let portalLayer = findById(layerRoot.portalLayers, item);
 				if (portalLayer !== null) {
 					decoratePortalLayer(portalLayer, group.id);
 				}
@@ -155,8 +155,16 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 				bus.send('layers-set-root', layerRoot);
 			}
 		},
+		addSubGroup: function(groupId, subGroup, sendSetRoot) {
+			let group = findById(layerRoot.groups, groupId);
+			group.items.push(subGroup);
+
+			if (sendSetRoot || sendSetRoot === undefined) {
+				bus.send('layers-set-root', layerRoot);
+			}
+		},
 		addLayer: function(groupId, portalLayer, wmsLayer, sendSetRoot) {
-			var group = findById(layerRoot.groups, groupId);
+			let group = findById(layerRoot.groups, groupId);
 			group.items.push(portalLayer.id);
 
 			layerRoot.wmsLayers.push(wmsLayer);
@@ -170,27 +178,27 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 			}
 		},
 		moveGroup: function(groupId, parentId, newPosition) {
-			var group = findById(layerRoot.groups, groupId);
+			const group = findById(layerRoot.groups, groupId);
 
 			// delete
-			var sourceItemsArray = layerRoot.groups;
-			var parentGroup = group.getParent();
+			let sourceItemsArray = layerRoot.groups;
+			const parentGroup = group.getParent();
 			if (parentGroup !== null) {
 				sourceItemsArray = parentGroup.items;
 			}
-			var sourceIndex = -1;
-			for (var i = 0; i < sourceItemsArray.length; i++) {
-				if (sourceItemsArray[i].id == groupId) {
+			let sourceIndex = -1;
+			for (let i = 0; i < sourceItemsArray.length; i++) {
+				if (sourceItemsArray[i].id === groupId) {
 					sourceIndex = i;
 					break;
 				}
 			}
-			var sameGroup = (group.parentId === null && parentId === null) || group.parentId == parentId;
-			if (!sameGroup || sourceIndex != newPosition) {
+			const sameGroup = (group.parentId === null && parentId === null) || group.parentId === parentId;
+			if (!sameGroup || sourceIndex !== newPosition) {
 				sourceItemsArray.splice(sourceIndex, 1);
 
 				// insert
-				var itemsArray = layerRoot.groups;
+				let itemsArray = layerRoot.groups;
 				if (parentId !== null) {
 					itemsArray = findById(layerRoot.groups, parentId).items;
 				}
@@ -200,25 +208,25 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 			}
 		},
 		moveLayer: function(layerId, parentId, newPosition) {
-			var group = layerRoot.groups.filter(function(g) {
+			const group = layerRoot.groups.filter(function(g) {
 				return g.items && g.items.indexOf(layerId) >= 0;
 			})[0];
 
 			// delete
-			var sourceItemsArray = group.items;
-			var sourceIndex = -1;
-			for (var i = 0; i < sourceItemsArray.length; i++) {
-				if (sourceItemsArray[i] == layerId) {
+			let sourceItemsArray = group.items;
+			let sourceIndex = -1;
+			for (let i = 0; i < sourceItemsArray.length; i++) {
+				if (sourceItemsArray[i] === layerId) {
 					sourceIndex = i;
 					break;
 				}
 			}
-			if (parentId != group.id || newPosition != sourceIndex) {
+			if (parentId !== group.id || newPosition !== sourceIndex) {
 				sourceItemsArray.splice(sourceIndex, 1);
 
 				// insert
-				var targetGroup = findById(layerRoot.groups, parentId);
-				var itemsArray = targetGroup.items;
+				const targetGroup = findById(layerRoot.groups, parentId);
+				let itemsArray = targetGroup.items;
 				itemsArray.splice(newPosition, 0, layerId);
 
 				bus.send('layers-set-root', layerRoot);
@@ -232,8 +240,8 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 			doDeleteLayer(id);
 			process(layerRoot.groups, function(group, i) {
 				if (group.hasOwnProperty('items')) {
-					var index = group.items.indexOf(id);
-					if (index != -1) {
+					const index = group.items.indexOf(id);
+					if (index !== -1) {
 						group.items.splice(index, 1);
 						return true;
 					}
@@ -245,7 +253,7 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 			bus.send('layers-set-root', layerRoot);
 		},
 		getDefaultServer: function() {
-			var ret = layerRoot['default-server'];
+			let ret = layerRoot['default-server'];
 			if (ret) {
 				ret = ret.trim();
 				if (ret.indexOf('http://') !== 0) {
