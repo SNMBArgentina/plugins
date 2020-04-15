@@ -272,11 +272,7 @@
           "title":"Info Link",
           "type":"string",
           "format":"uri"
-        },
-        "sameLegend":{
-          "title":"Same legend",
-          "type":"boolean"
-        }
+        }        
       },
       "required":[
         "id",
@@ -389,6 +385,10 @@
         },
         {
           "properties":{
+            "sameLegend":{
+              "title":"Same legend",
+              "type":"boolean"
+            },
             "items":{
               "title":"Group items",
               "type":"array",

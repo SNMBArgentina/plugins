@@ -46,16 +46,16 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 
 	function editGroup(id) {
 		createDialog(i18n['layers-editor.edit_group_title'], function() {
-			saveGroup();
+			saveGroup(id);
 		});
-		addTocFields(layerRoot.getGroup(id));
+		addSubgroupFields(layerRoot.getGroup(id));
 	}
 
 	function editSubgroup(id) {
 		createDialog(i18n['layers-editor.edit_subgroup_title'], function() {
-			saveGroup();
+			saveGroup(id);
 		});
-		addTocFields(layerRoot.getGroup(id));
+		addSubgroupFields(layerRoot.getGroup(id));
 	}
 
 	function newLayer(groupId) {
@@ -79,10 +79,14 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 			addNewGroup();
 		});
 
-		addTocFields({
+		addSubgroupFields({
 			'id': 'unique-id-' + (new Date()).getTime(),
 			'label': i18n['layers-editor.new_group']
 		});
+/* 		addTocFields({
+			'id': 'unique-id-' + (new Date()).getTime(),
+			'label': i18n['layers-editor.new_group']
+		}); */
 	}
 
 	function newSubgroup(groupId) {
@@ -437,16 +441,16 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 		layerRoot.setDefaultServer(data.server['default-server']);
 	}
 
-	function saveGroup() {
+	function saveGroup(groupId) {
 		let data = getFormValues();
-		layerRoot.getGroup(data.toc.id).merge(data.toc);
+		layerRoot.getGroup(groupId).merge(data.subGroup);
 	}
 
 	function addNewGroup() {
 		let data = getFormValues();
 		let group = $.extend({
 			items: []
-		}, data.toc);
+		}, data.subGroup);
 		layerRoot.addGroup(group);
 	}
 
