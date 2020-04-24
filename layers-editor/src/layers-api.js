@@ -208,9 +208,21 @@ define([ 'jquery', 'message-bus' ], function($, bus) {
 			}
 		},
 		moveLayer: function(layerId, parentId, newPosition) {
-			const group = layerRoot.groups.filter(function(g) {
+			let group = layerRoot.groups.filter(function(g) {
 				return g.items && g.items.indexOf(layerId) >= 0;
 			})[0];
+
+			// If layer is the subgroup
+			if (typeof group === 'undefined') {
+				const groups = layerRoot.groups;
+				for (let x = 0; x < groups.length; x++) {
+					for (let i = 0; i < groups[x].items.length; i++) {
+						if (groups[x].items[i].id === parentId) {
+							group = groups[x].items[i];
+						}
+					}
+				}
+			}
 
 			// delete
 			let sourceItemsArray = group.items;

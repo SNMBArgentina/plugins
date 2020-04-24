@@ -272,7 +272,7 @@
           "title":"Info Link",
           "type":"string",
           "format":"uri"
-        }        
+        }
       },
       "required":[
         "id",
@@ -354,41 +354,27 @@
       ]
     },
     "subGroup": {
-      "properties": {
-        "id": {
-          "title": "Identifier",
-          "type": "string"
-        },
-        "label": {
-          "title": "Label",
-          "type" : "string"
-        },
-        "infoFile":{
-          "title":"Info File",
-          "type":"string"
-        },
-        "infoLink":{
-          "title":"Info Link",
-          "type":"string",
-          "format":"uri"
-        },
-        "sameLegend":{
-          "title":"Same legend",
-          "type":"boolean"
-        }
-      }
-    },
-    "group":{
       "allOf":[
         {
           "$ref":"#/definitions/toc"
         },
         {
+        "properties": {
+          "sameLegend":{
+          "title":"Same legend",
+          "type":"boolean"
+          }
+         } 
+        }
+      ]
+    },
+    "group":{
+      "allOf":[
+        {
+          "$ref":"#/definitions/subGroup"
+        },
+        {
           "properties":{
-            "sameLegend":{
-              "title":"Same legend",
-              "type":"boolean"
-            },
             "items":{
               "title":"Group items",
               "type":"array",
@@ -398,7 +384,7 @@
                     "type":"string"
                   },
                   {
-                    "$ref":"#/definitions/subGroup"
+                    "$ref":"#/definitions/group"
                   }
                 ]
               },
