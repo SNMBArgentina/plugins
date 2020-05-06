@@ -1,6 +1,6 @@
 {
 	"name": "@geoladris/ol2controls",
-	"version": "7.0.1-SNAPSHOT",
+	"version": "7.1.0",
 	"license": "MIT",
 	"description": "Geoladris Plugin: ol2controls",
 	"repository": "git@github.com:geoladris/plugins.git",

@@ -1,6 +1,6 @@
 {
 	"name": "@geoladris/geoexplorer-reader",
-	"version": "7.0.1-SNAPSHOT",
+	"version": "7.1.0",
 	"license": "MIT",
 	"description": "Geoladris Plugin: geoexplorer-reader",
 	"repository": "git@github.com:geoladris/plugins.git",

@@ -1,6 +1,6 @@
 {
 	"name": "@geoladris/measure-tools",
-	"version": "7.0.1-SNAPSHOT",
+	"version": "7.1.0",
 	"license": "MIT",
 	"description": "Geoladris Plugin: measure-tools",
 	"repository": "git@github.com:geoladris/plugins.git",

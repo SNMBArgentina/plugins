@@ -1,6 +1,6 @@
 {
   "name": "geoladris-plugins",
-  "version": "7.0.1-SNAPSHOT",
+  "version": "7.1.0",
   "devDependencies": {
     "babel-eslint": "^7.2.1",
     "eslint": "^3.18.0",
