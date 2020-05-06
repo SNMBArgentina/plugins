@@ -14,7 +14,7 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 		'wmsLayer-wmsType': schema.definitions['wmsLayer-wmsType'].allOf[1].properties,
 		'wmsLayer-osmType': schema.definitions['wmsLayer-osmType'].allOf[1].properties,
 		'wmsLayer-gmapsType': schema.definitions['wmsLayer-gmapsType'].allOf[1].properties,
-		'subGroup': schema.definitions.subGroup.properties
+		'subGroup': schema.definitions.subGroup.allOf[1].properties
 	};
 
 	// We assume 1:1 between portalLayer and wmsLayer, so this is tricked
@@ -46,16 +46,16 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 
 	function editGroup(id) {
 		createDialog(i18n['layers-editor.edit_group_title'], function() {
-			saveGroup();
+			saveGroup(id);
 		});
-		addTocFields(layerRoot.getGroup(id));
+		addSubgroupFields(layerRoot.getGroup(id));
 	}
 
 	function editSubgroup(id) {
 		createDialog(i18n['layers-editor.edit_subgroup_title'], function() {
-			saveGroup();
+			saveGroup(id);
 		});
-		addTocFields(layerRoot.getGroup(id));
+		addSubgroupFields(layerRoot.getGroup(id));
 	}
 
 	function newLayer(groupId) {
@@ -79,7 +79,7 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 			addNewGroup();
 		});
 
-		addTocFields({
+		addSubgroupFields({
 			'id': 'unique-id-' + (new Date()).getTime(),
 			'label': i18n['layers-editor.new_group']
 		});
@@ -154,6 +154,7 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 	}
 
 	function addSubgroupFields(values) {
+		addTocFields(values);
 		addFields(i18n['layers-editor.panel_layer_description'], 'subGroup', values);
 	}
 
@@ -181,7 +182,7 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 				definition: 'wmsLayer-gmapsType'
 			}
 		};
-		for ( let t in types) {
+		for (let t in types) {
 			removePanel(types[t].definition);
 		}
 		let fieldset = addFields(types[type].label, types[type].definition, values);
@@ -278,7 +279,7 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 		let input;
 		let id = fieldset.id + '-' + (definition.id || fieldIndex++);
 		if (definition.enum) {
-			var values = [];
+			let values = [];
 			for (const e in definition.enum) {
 				values.push(definition.enum[e]);
 			}
@@ -408,10 +409,10 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 
 				if (definition.hasOwnProperty('enum')) {
 					values[name] = value;
-				} else if (definition.type == 'string') {
+				} else if (definition.type === 'string') {
 					// No text => no key entry
 					values[name] = value;
-				} else if (definition.type == 'array') {
+				} else if (definition.type === 'array') {
 					// Split string by line
 					values[name] = value.match(/[^\r\n]+/g);
 					if (!value) {
@@ -437,16 +438,16 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 		layerRoot.setDefaultServer(data.server['default-server']);
 	}
 
-	function saveGroup() {
+	function saveGroup(groupId) {
 		let data = getFormValues();
-		layerRoot.getGroup(data.toc.id).merge(data.toc);
+		layerRoot.getGroup(groupId).merge(data.subGroup);
 	}
 
 	function addNewGroup() {
 		let data = getFormValues();
 		let group = $.extend({
 			items: []
-		}, data.toc);
+		}, data.subGroup);
 		layerRoot.addGroup(group);
 	}
 
@@ -460,9 +461,9 @@ define([ 'i18n', './layers-schema', './layers-api', 'message-bus', 'jquery', 'ui
 	function buildWMSLayer() {
 		let data = getFormValues();
 		let wmsLayer = data['wmsLayer-base'];
-		if (wmsLayer.type && wmsLayer.type == 'osm') {
+		if (wmsLayer.type && wmsLayer.type === 'osm') {
 			$.extend(wmsLayer, data['wmsLayer-osmType']);
-		} else if (wmsLayer.type && wmsLayer.type == 'gmaps') {
+		} else if (wmsLayer.type && wmsLayer.type === 'gmaps') {
 			$.extend(wmsLayer, data['wmsLayer-gmapsType']);
 		} else {
 			$.extend(wmsLayer, data['wmsLayer-wmsType']);
