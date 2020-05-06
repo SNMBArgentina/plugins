@@ -1,12 +1,11 @@
 {
 	"name": "@geoladris/measure-tools",
-	"version": "7.1.0",
+	"version": "7.2.0-SNAPSHOT",
 	"license": "MIT",
 	"description": "Geoladris Plugin: measure-tools",
 	"repository": "git@github.com:geoladris/plugins.git",
 	"author": "Micho Garcia <micho.garcia@geomati.co>",
-	"contributors": [
-	],
+	"contributors": [],
 	"dependencies": {
 		"@geoladris/core": "~7.0.0"
 	},
