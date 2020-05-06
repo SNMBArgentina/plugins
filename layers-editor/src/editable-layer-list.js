@@ -111,7 +111,7 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui',
 		let groupContainer = document.getElementById('all_layers');
 		ui.sortable(groupContainer);
 		groupContainer.addEventListener('change', function(e) {
-			if (e.hasOwnProperty('detail')) {
+			if (e.detail) {
 				let item = e.detail.item;
 				layerRoot.moveGroup(getGroupId(item.id), getParent(item), e.detail.newIndex);
 			}
@@ -121,9 +121,13 @@ define([ 'message-bus', './layers-edit-form', './layers-api', 'jquery', 'ui/ui',
 		Array.prototype.forEach.call(containers, function(container) {
 			ui.sortable(container);
 			container.addEventListener('change', function(e) {
-				if (e.hasOwnProperty('detail')) {
+				if (e.detail) {
 					let item = e.detail.item;
-					layerRoot.moveLayer(getLayerId(item.id), getParent(item), e.detail.newIndex);
+					if (e.detail.item.className === 'layer-list-accordion-container') {
+						layerRoot.moveGroup(getGroupId(item.id), getParent(item), e.detail.newIndex);
+					} else if (e.detail.item.className === 'ui-input-container') {
+						layerRoot.moveLayer(getLayerId(item.id), getParent(item), e.detail.newIndex);
+					}
 				}
 			});
 		});
